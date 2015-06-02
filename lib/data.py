@@ -16,7 +16,8 @@ JMDICT_URL = "http://ftp.monash.edu.au/pub/nihongo/JMdict_e.gz"
 def init_database(path):
     print("downloading JMDict dictionary...")
     destination = os.path.join(path, "JMDict_e.gz")
-    urllib.urlretrieve(JMDICT_URL, destination)
+    if not os.path.isfile(destination):
+        urllib.urlretrieve(JMDICT_URL, destination)
 
     print("unpacking dictionary...")
     f = gzip.open(destination, 'rb')
@@ -27,8 +28,8 @@ def init_database(path):
     dictionary = ET.fromstring(raw_xml)
 
     print("creating emtpy database...")
-    conn = sqlite3.connect(os.path.join(path, "verbs.db"))
-    cur = conn.cursor()
+    db = sqlite3.connect(os.path.join(path, "verbs.db"))
+    cur = db.cursor()
 
     # maybe drop table before hand if table exits already
     print("creating tables...")
@@ -37,7 +38,7 @@ def init_database(path):
                     kana TEXT,
                     kanji TEXT,
                     type TEXT,
-                    english TEXT
+                    english TEXT,
                     jlpt INTEGER)''')
 
     print("populating tables...")
@@ -45,24 +46,23 @@ def init_database(path):
              if " verb" in entry.find('sense').find('pos').text]
 
     for idx, verb in enumerate(verbs):
+        seq = verb.find('ent_seq').text
         kana = verb.find('r_ele')[0].text
 
-        kanji_container = verb.find('k_ele')[0]
+        kanji_container = verb.find('k_ele')
         kanji = ""
         if kanji_container is not None:
-            kanji = kanji_container.text
+            kanji = kanji_container[0].text
 
         sense = verb.find('sense')
 
         verb_type = sense.find('pos').text
         english = ", ".join([gloss.text
-                            for gloss in sense.findall('gloss')])
+                             for gloss in sense.findall('gloss')])
         jlpt = 0  # for now
 
-        cur.execute('INSERT INTO verbs VALUES (?,?,?,?,?)',
-                    [kana, kanji, verb_type, english, jlpt])
+        cur.execute('INSERT INTO verbs VALUES (?,?,?,?,?,?)',
+                    [seq, kana, kanji, verb_type, english, jlpt])
 
-        if idx % 10 is 0:
-            sys.stdout.write('.')
-
+    db.commit()
     print("{0} verbs added".format(idx))
