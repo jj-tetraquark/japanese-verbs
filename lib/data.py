@@ -3,7 +3,6 @@
 
 import urllib
 import os
-import sys
 import gzip
 import sqlite3
 import re
@@ -14,7 +13,7 @@ import xml.etree.ElementTree as ET
 JMDICT_URL = "http://ftp.monash.edu.au/pub/nihongo/JMdict_e.gz"
 
 
-def init_database(path):
+def init_database(path, jlpt_dictionary):
     print("downloading JMDict dictionary...")
     destination = os.path.join(path, "JMDict_e.gz")
     if not os.path.isfile(destination):
@@ -29,7 +28,7 @@ def init_database(path):
     dictionary = ET.fromstring(raw_xml)
 
     print("creating emtpy database...")
-    db = sqlite3.connect(os.path.join(path, "verbs.db"))
+    db = sqlite3.connect(os.path.join(path, "data.db"))
     cur = db.cursor()
 
     # maybe drop table before hand if table exits already
@@ -66,7 +65,8 @@ def init_database(path):
 
         english = ", ".join([gloss.text
                              for gloss in sense.findall('gloss')])
-        jlpt = 0  # for now
+
+        jlpt = jlpt_dictionary.get((kanji, kana), 0)
 
         cur.execute('INSERT INTO verbs VALUES (?,?,?,?,?,?,?)',
                     [seq, kana, kanji, verb_type, ending, english, jlpt])
@@ -87,7 +87,6 @@ def get_verb_type(description):
         verb_type = "kuru"
     elif description.startswith("suru"):
         verb_type = "suru"
-
 
     match = re.search('`([bgkmrts]*?u)\'', description)
     if match:
