@@ -6,6 +6,7 @@ import os
 import sys
 import gzip
 import sqlite3
+import re
 
 import xml.etree.ElementTree as ET
 
@@ -33,11 +34,13 @@ def init_database(path):
 
     # maybe drop table before hand if table exits already
     print("creating tables...")
+    cur.execute('''DROP TABLE IF EXISTS verbs''')
     cur.execute('''CREATE TABLE verbs (
                     id INTEGER PRIMARY KEY,
                     kana TEXT,
                     kanji TEXT,
                     type TEXT,
+                    ending TEXT,
                     english TEXT,
                     jlpt INTEGER)''')
 
@@ -45,7 +48,7 @@ def init_database(path):
     verbs = [entry for entry in dictionary
              if " verb" in entry.find('sense').find('pos').text]
 
-    for idx, verb in enumerate(verbs):
+    for verb in verbs:
         seq = verb.find('ent_seq').text
         kana = verb.find('r_ele')[0].text
 
@@ -56,13 +59,54 @@ def init_database(path):
 
         sense = verb.find('sense')
 
-        verb_type = sense.find('pos').text
+        verb_type, ending = get_verb_type(sense.find('pos').text)
+
+        if not verb_type or not ending:
+            continue
+
         english = ", ".join([gloss.text
                              for gloss in sense.findall('gloss')])
         jlpt = 0  # for now
 
-        cur.execute('INSERT INTO verbs VALUES (?,?,?,?,?,?)',
-                    [seq, kana, kanji, verb_type, english, jlpt])
+        cur.execute('INSERT INTO verbs VALUES (?,?,?,?,?,?,?)',
+                    [seq, kana, kanji, verb_type, ending, english, jlpt])
 
     db.commit()
-    print("{0} verbs added".format(idx))
+    cur.execute('SELECT * FROM verbs')
+    print("{0} verbs added".format(len(cur.fetchall())))
+
+
+def get_verb_type(description):
+    verb_type = None
+    ending = None
+    if description.startswith("Godan"):
+        verb_type = "godan"
+    elif description.startswith("Ichidan"):
+        verb_type = "ichidan"
+    elif description.startswith("Kuru"):
+        verb_type = "kuru"
+    elif description.startswith("suru"):
+        verb_type = "suru"
+
+
+    match = re.search('`([bgkmrts]*?u)\'', description)
+    if match:
+        ending = match.group(1)
+    elif "Iku" in description:
+        ending = "iku"
+    elif "-aru" in description:
+        ending = "aru"
+    elif description is "kuru":
+        ending = "kuru"
+    elif "zuru" in description:
+        ending = "zuru"
+    elif "kureru" in description:
+        ending = "kureru"
+    elif verb_type is "ichidan":
+        ending = "ru"
+    elif "special" in description:
+        ending = "sp"
+    elif "irregular" in description:
+        ending = "irr"
+
+    return verb_type, ending
