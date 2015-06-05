@@ -130,6 +130,7 @@ class Database(object):
             print("Creating new sqlite database at {}".format(db_path))
 
         self.db = sqlite3.connect(db_path)
+        self.db.row_factory = sqlite3.Row
         self.cur = self.db.cursor()
 
     def is_initialized(self):
@@ -137,5 +138,6 @@ class Database(object):
         return entry_count > 0
 
     def get_verb(self):
-        pass
+        self.cur.execute(''' SELECT * FROM verbs ORDER BY RANDOM() LIMIT 1 ''')
+        return self.cur.fetchone()
 

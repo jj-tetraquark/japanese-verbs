@@ -11,7 +11,8 @@ class TestDatabaseConnections(unittest.TestCase):
 
     def test_get_random_verb(self):
         db = database.Database(DB_PATH)
-        self.assertIsNotNone(db.get_verb())
+        verb = db.get_verb()
+        self.assertNotEqual(verb["kana"], "") # kana should never be empty
 
 
 
