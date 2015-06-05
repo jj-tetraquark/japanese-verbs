@@ -82,13 +82,13 @@ def get_verb_type(description):
     verb_type = None
     ending = None
     if description.startswith("Godan"):
-        verb_type = verbs.GODAN
+        verb_type = verbs.Types.GODAN
     elif description.startswith("Ichidan"):
-        verb_type = verbs.ICHIDAN
+        verb_type = verbs.Types.ICHIDAN
     elif description.startswith("Kuru"):
-        verb_type = verbs.KURU
+        verb_type = verbs.Types.KURU
     elif description.startswith("suru"):
-        verb_type = verbs.SURU
+        verb_type = verbs.Types.SURU
 
     match = re.search('`([bgkmrts]*?u)\'', description)
     if match:

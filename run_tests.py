@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import unittest
 import lib.database as database
@@ -20,10 +21,27 @@ class TestDatabaseConnections(unittest.TestCase):
         self.assertNotEqual(verb["kana"], "")  # kana should never be empty
 
     def test_get_all_verb_types(self):
-        verb_types = [verbs.ICHIDAN, verbs.GODAN, verbs.KURU, verbs.SURU]
-        for v_type in verb_types:
+        for v_type in verbs.Types.All():
             verb = self.db.get_verb(type=v_type)
             self.assertEqual(verb["type"], v_type)
+
+
+class TestVerbObject(unittest.TestCase):
+
+    def test_get_plain(self):
+        au = verbs.Verb(kana="あう",
+                        kanji="会う",
+                        type=verbs.Types.GODAN,
+                        ending="u",
+                        english="to meet")
+        self.assertEqual(au.plain(), "会う")
+
+        segamu = verbs.Verb(kana="せがむ",
+                            kanji="",
+                            type=verbs.Types.GODAN,
+                            ending="mu",
+                            english="to pester")
+        self.assertEqual(segamu.plain(), "せがむ")
 
 
 if __name__ == "__main__":
