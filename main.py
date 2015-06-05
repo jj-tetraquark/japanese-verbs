@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import os
-import lib.data as data
+import lib.database as database
 
 
 def main():
@@ -15,7 +15,7 @@ def is_first_run():
 
 def do_installation():
     print("Running first time installation...")
-    data.init_database('data', build_jlpt_dict())
+    database.init('data', build_jlpt_dict())
 
 
 def build_jlpt_dict():
@@ -24,11 +24,15 @@ def build_jlpt_dict():
     for x in range(1, 6):
         print("jlpt{0}".format(x))
         datfile = "data/jlpt{0}.dat".format(x)
+
         with open(datfile) as f:
             for line in f.readlines():
                 kanji, kana = line.split(',')
                 if '-' in kanji:
                     kanji = ""
+
+                kana = kana.rstrip()
+
                 jlpt[(kanji.decode('utf-8'), kana.decode('utf-8'))] = x
 
     return jlpt
