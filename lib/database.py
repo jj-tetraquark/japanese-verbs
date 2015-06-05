@@ -46,10 +46,10 @@ def init(path, jlpt_dictionary):
                     jlpt INTEGER)''')
 
     print("populating tables...")
-    verbs = [entry for entry in dictionary
-             if " verb" in entry.find('sense').find('pos').text]
+    verb_entries = [entry for entry in dictionary
+                    if " verb" in entry.find('sense').find('pos').text]
 
-    for verb in verbs:
+    for verb in verb_entries:
         seq = verb.find('ent_seq').text
         kana = verb.find('r_ele')[0].text
 
@@ -137,7 +137,15 @@ class Database(object):
         entry_count = self.cur.execute(''' SELECT COUNT(*) FROM verbs ''')
         return entry_count > 0
 
-    def get_verb(self):
-        self.cur.execute(''' SELECT * FROM verbs ORDER BY RANDOM() LIMIT 1 ''')
-        return self.cur.fetchone()
+    def get_verb(self, **kwargs):
+        verb_type = kwargs.get('type', None)
+        where_statement = ""
 
+        if verb_type:
+            where_statement += "WHERE type='{0}' ".format(verb_type)
+
+        command = ("SELECT * FROM verbs {0}"
+                   "ORDER BY RANDOM() LIMIT 1".format(where_statement))
+
+        self.cur.execute(command)
+        return self.cur.fetchone()

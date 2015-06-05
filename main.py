@@ -15,7 +15,7 @@ def is_first_run():
 
 def do_installation():
     print("Running first time installation...")
-    database.init('data', build_jlpt_dict())
+    database.init('data/data.db', build_jlpt_dict())
 
 
 def build_jlpt_dict():
