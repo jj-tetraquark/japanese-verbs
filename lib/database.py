@@ -6,6 +6,7 @@ import os
 import gzip
 import sqlite3
 import re
+import verbs
 
 import xml.etree.ElementTree as ET
 
@@ -13,14 +14,15 @@ import xml.etree.ElementTree as ET
 JMDICT_URL = "http://ftp.monash.edu.au/pub/nihongo/JMdict_e.gz"
 
 
-def init_database(path, jlpt_dictionary):
+def init(path, jlpt_dictionary):
     print("downloading JMDict dictionary...")
-    destination = os.path.join(path, "JMDict_e.gz")
-    if not os.path.isfile(destination):
-        urllib.urlretrieve(JMDICT_URL, destination)
+    directory = os.path.dirname(path)
+    dictionary_file = os.path.join(directory, "JMDict_e.gz")
+    if not os.path.isfile(dictionary_file):
+        urllib.urlretrieve(JMDICT_URL, dictionary_file)
 
     print("unpacking dictionary...")
-    f = gzip.open(destination, 'rb')
+    f = gzip.open(dictionary_file, 'rb')
     raw_xml = f.read()
     f.close()
 
@@ -28,7 +30,7 @@ def init_database(path, jlpt_dictionary):
     dictionary = ET.fromstring(raw_xml)
 
     print("creating emtpy database...")
-    db = sqlite3.connect(os.path.join(path, "data.db"))
+    db = sqlite3.connect(path)
     cur = db.cursor()
 
     # maybe drop table before hand if table exits already
@@ -80,13 +82,13 @@ def get_verb_type(description):
     verb_type = None
     ending = None
     if description.startswith("Godan"):
-        verb_type = "godan"
+        verb_type = verbs.GODAN
     elif description.startswith("Ichidan"):
-        verb_type = "ichidan"
+        verb_type = verbs.ICHIDAN
     elif description.startswith("Kuru"):
-        verb_type = "kuru"
+        verb_type = verbs.KURU
     elif description.startswith("suru"):
-        verb_type = "suru"
+        verb_type = verbs.SURU
 
     match = re.search('`([bgkmrts]*?u)\'', description)
     if match:
@@ -109,3 +111,31 @@ def get_verb_type(description):
         ending = "irr"
 
     return verb_type, ending
+
+
+def is_initialized(db_path):
+
+    if os.path.isfile(db_path):
+        db = Database(db_path)
+        return db.is_initialized()
+
+    return False
+
+
+class Database(object):
+    ''' Class used for handling database connections '''
+
+    def __init__(self, db_path):
+        if not os.path.isfile(db_path):
+            print("Creating new sqlite database at {}".format(db_path))
+
+        self.db = sqlite3.connect(db_path)
+        self.cur = self.db.cursor()
+
+    def is_initialized(self):
+        entry_count = self.cur.execute(''' SELECT COUNT(*) FROM verbs ''')
+        return entry_count > 0
+
+    def get_verb(self):
+        pass
+
