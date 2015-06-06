@@ -29,24 +29,24 @@ class TestDatabaseConnections(unittest.TestCase):
 class TestVerbObject(unittest.TestCase):
 
     def test_get_plain(self):
-        au = verbs.Verb(kana="あう",
-                        kanji="会う",
+        au = verbs.Verb(kana=u"あう",
+                        kanji=u"会う",
                         type=verbs.Types.GODAN,
                         ending="u",
                         english="to meet")
-        self.assertEqual(au.plain(), "会う")
+        self.assertEqual(au.plain(), u"会う")
 
-        segamu = verbs.Verb(kana="せがむ",
+        segamu = verbs.Verb(kana=u"せがむ",
                             type=verbs.Types.GODAN,
                             ending="mu")
-        self.assertEqual(segamu.plain(), "せがむ")
+        self.assertEqual(segamu.plain(), u"せがむ")
 
     def test_get_ichidan_masu(self):
-        taberu = verbs.Verb(kana="たべる",
-                            kanji="食べる",
+        taberu = verbs.Verb(kana=u"たべる",
+                            kanji=u"食べる",
                             type=verbs.Types.ICHIDAN,
                             ending="ru")
-        self.assertEqual("食べます", taberu.masu())
+        self.assertEqual(u"食べます", taberu.masu())
 
 if __name__ == "__main__":
     unittest.main()

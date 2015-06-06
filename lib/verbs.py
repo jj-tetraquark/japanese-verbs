@@ -43,5 +43,4 @@ class Verb(object):
 
     #TODO: should take kwargs with kanji=True/False
     def masu(self):
-        # kana are three chars wide
-        return self.kanji[:-3] + "ます"
+        return self.kanji[:-1] + u"ます"
