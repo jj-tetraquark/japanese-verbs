@@ -1,4 +1,7 @@
+# -*- coding: utf-8 -*-
 # Verb types as string constants
+
+
 class Types(object):
     ICHIDAN = "ichidan"
     GODAN = "godan"
@@ -37,3 +40,8 @@ class Verb(object):
 
     def plain(self):
         return self.kanji if self.kanji else self.kana
+
+    #TODO: should take kwargs with kanji=True/False
+    def masu(self):
+        # kana are three chars wide
+        return self.kanji[:-3] + "ます"

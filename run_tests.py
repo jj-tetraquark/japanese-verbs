@@ -37,12 +37,16 @@ class TestVerbObject(unittest.TestCase):
         self.assertEqual(au.plain(), "会う")
 
         segamu = verbs.Verb(kana="せがむ",
-                            kanji="",
                             type=verbs.Types.GODAN,
-                            ending="mu",
-                            english="to pester")
+                            ending="mu")
         self.assertEqual(segamu.plain(), "せがむ")
 
+    def test_get_ichidan_masu(self):
+        taberu = verbs.Verb(kana="たべる",
+                            kanji="食べる",
+                            type=verbs.Types.ICHIDAN,
+                            ending="ru")
+        self.assertEqual("食べます", taberu.masu())
 
 if __name__ == "__main__":
     unittest.main()
