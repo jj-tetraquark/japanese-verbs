@@ -49,24 +49,16 @@ class Verb(object):
         if self.type is Types.ICHIDAN:
             return stem[:-1] + u"ます"
         elif self.type is Types.GODAN:
-            if self.ending is "u":
-                return stem[:-1] + u"います"
-            elif self.ending is "tsu":
-                return stem[:-1] + u"ちます"
-            elif self.ending is "su":
-                return stem[:-1] + u"します"
-            elif self.ending is "mu":
-                return stem[:-1] + u"みます"
-            elif self.ending is "ku":
-                return stem[:-1] + u"きます"
-            elif self.ending is "gu":
-                return stem[:-1] + u"ぎます"
-            elif self.ending is "nu":
-                return stem[:-1] + u"にます"
-            elif self.ending is "bu":
-                return stem[:-1] + u"びます"
-            elif self.ending is "ru":
-                return stem[:-1] + u"ります"
+            u_to_i_map = {"u": u"い",
+                          "tsu": u"ち",
+                          "su": u"し",
+                          "mu": u"み",
+                          "ku": u"き",
+                          "gu": u"ぎ",
+                          "nu": u"に",
+                          "bu": u"び",
+                          "ru": u"り"}
+            return stem[:-1] + u_to_i_map[self.ending] + u"ます"
         elif self.type is Types.SURU:
             return stem[:-2] + u"します"
         elif self.type is Types.KURU:
@@ -76,4 +68,3 @@ class Verb(object):
                 return stem[:-2] + u"きます"
         else:
             raise TypeError("Unrecognised verb type!")
-
