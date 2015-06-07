@@ -38,13 +38,13 @@ class Verb(object):
                    ending=dic["ending"],
                    english=dic["english"])
 
-    def plain(self):
-        return self.kanji if self.kanji else self.kana
+    def plain(self, **kwargs):
+        use_kanji = kwargs.get("kanji", True)
+        return self.kanji if use_kanji and self.kanji else self.kana
 
-    #TODO: should take kwargs with kanji=True/False
     def masu(self, **kwargs):
 
-        stem = self.kanji if kwargs.get("kanji", True) else self.kana
+        stem = self.plain(**kwargs)
 
         if self.type is Types.ICHIDAN:
             return stem[:-1] + u"ます"

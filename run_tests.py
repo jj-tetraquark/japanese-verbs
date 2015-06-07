@@ -35,6 +35,7 @@ class TestVerbObject(unittest.TestCase):
                         ending="u",
                         english="to meet")
         self.assertEqual(au.plain(), u"会う")
+        self.assertEqual(au.plain(kanji=False), u"あう")
 
         segamu = verbs.Verb(kana=u"せがむ",
                             type=verbs.Types.GODAN,
