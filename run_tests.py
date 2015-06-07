@@ -133,6 +133,10 @@ class TestVerbObject(unittest.TestCase):
         self.assertEqual(u"食べません", self.taberu.masu_negative())
         self.assertEqual(u"たべません", self.taberu.masu_negative(kanji=False))
 
+    def test_masu_past(self):
+        self.assertEqual(u"食べました", self.taberu.masu_past())
+        self.assertEqual(u"たべました", self.taberu.masu_past(kanji=False))
+
 
 if __name__ == "__main__":
     unittest.main()

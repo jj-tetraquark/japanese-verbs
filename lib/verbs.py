@@ -70,3 +70,6 @@ class Verb(object):
 
     def masu_negative(self, **kwargs):
         return self.masu(**kwargs)[:-1] + u"せん"
+
+    def masu_past(self, **kwargs):
+        return self.masu(**kwargs)[:-1] + u"した"
