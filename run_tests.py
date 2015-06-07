@@ -56,5 +56,23 @@ class TestVerbObject(unittest.TestCase):
                         english="to meet")
         self.assertEqual(u"会います", au.masu())
 
+    def test_get_godan_masu_tsu_ending(self):
+        matsu = verbs.Verb(kana=u"まつ",
+                           kanji=u"待つ",
+                           type=verbs.Types.GODAN,
+                           ending="tsu",
+                           english="to wait")
+        self.assertEqual(u"待ちます", matsu.masu())
+
+    def test_get_godan_masu_su_ending(self):
+        osu = verbs.Verb(kana=u"おす",
+                         kanji=u"押す",
+                         type=verbs.Types.GODAN,
+                         ending="su",
+                         english="to push, to press")
+        self.assertEqual(u"押します", osu.masu())
+
+
+
 if __name__ == "__main__":
     unittest.main()

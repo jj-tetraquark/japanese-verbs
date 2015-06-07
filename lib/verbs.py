@@ -46,4 +46,9 @@ class Verb(object):
         if self.type is Types.ICHIDAN:
             return self.kanji[:-1] + u"ます"
         else:
-            return self.kanji[:-1] + u"います"
+            if self.ending is "u":
+                return self.kanji[:-1] + u"います"
+            elif self.ending is "tsu":
+                return self.kanji[:-1] + u"ちます"
+            else:
+                return self.kanji[:-1] + u"します"
