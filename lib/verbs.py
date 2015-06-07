@@ -43,12 +43,11 @@ class Verb(object):
         return self.kanji if use_kanji and self.kanji else self.kana
 
     def masu(self, **kwargs):
-
         stem = self.plain(**kwargs)
 
-        if self.type is Types.ICHIDAN:
+        if self.type == Types.ICHIDAN:
             return stem[:-1] + u"ます"
-        elif self.type is Types.GODAN:
+        elif self.type == Types.GODAN:
             u_to_i_map = {"u": u"い",
                           "tsu": u"ち",
                           "su": u"し",
@@ -59,9 +58,9 @@ class Verb(object):
                           "bu": u"び",
                           "ru": u"り"}
             return stem[:-1] + u_to_i_map[self.ending] + u"ます"
-        elif self.type is Types.SURU:
+        elif self.type == Types.SURU:
             return stem[:-2] + u"します"
-        elif self.type is Types.KURU:
+        elif self.type == Types.KURU:
             if u"来" in stem:
                 return stem[:-1] + u"ます"
             else:
