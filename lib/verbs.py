@@ -42,25 +42,38 @@ class Verb(object):
         return self.kanji if self.kanji else self.kana
 
     #TODO: should take kwargs with kanji=True/False
-    def masu(self):
+    def masu(self, **kwargs):
+
+        stem = self.kanji if kwargs.get("kanji", True) else self.kana
+
         if self.type is Types.ICHIDAN:
-            return self.kanji[:-1] + u"ます"
-        else:
+            return stem[:-1] + u"ます"
+        elif self.type is Types.GODAN:
             if self.ending is "u":
-                return self.kanji[:-1] + u"います"
+                return stem[:-1] + u"います"
             elif self.ending is "tsu":
-                return self.kanji[:-1] + u"ちます"
+                return stem[:-1] + u"ちます"
             elif self.ending is "su":
-                return self.kanji[:-1] + u"します"
+                return stem[:-1] + u"します"
             elif self.ending is "mu":
-                return self.kanji[:-1] + u"みます"
+                return stem[:-1] + u"みます"
             elif self.ending is "ku":
-                return self.kanji[:-1] + u"きます"
+                return stem[:-1] + u"きます"
             elif self.ending is "gu":
-                return self.kanji[:-1] + u"ぎます"
+                return stem[:-1] + u"ぎます"
             elif self.ending is "nu":
-                return self.kanji[:-1] + u"にます"
+                return stem[:-1] + u"にます"
             elif self.ending is "bu":
-                return self.kanji[:-1] + u"びます"
+                return stem[:-1] + u"びます"
             elif self.ending is "ru":
-                return self.kanji[:-1] + u"ります"
+                return stem[:-1] + u"ります"
+        elif self.type is Types.SURU:
+            return stem[:-2] + u"します"
+        elif self.type is Types.KURU:
+            if u"来" in stem:
+                return stem[:-1] + u"ます"
+            else:
+                return stem[:-2] + u"きます"
+        else:
+            raise TypeError("Unrecognised verb type!")
+

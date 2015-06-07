@@ -120,6 +120,30 @@ class TestVerbObject(unittest.TestCase):
                            english="to go home")
         self.assertEqual(u"帰ります", kaeru.masu())
 
+    def test_get_suru_masu(self):
+        suru = verbs.Verb(kana=u"する",
+                          kanji=u"",  # often written as kana alone
+                          type=verbs.Types.SURU,
+                          ending="irr",
+                          english="to do")
+        self.assertEqual(u"します", suru.masu())
+
+        fukusuru = verbs.Verb(kana=u"ふくする",
+                              kanji=u"復する",
+                              type=verbs.Types.SURU,
+                              ending="irr",
+                              english="to return to normal")
+        self.assertEqual(u"復します", fukusuru.masu())
+
+    def test_get_kuru_masu(self):
+        kuru = verbs.Verb(kana=u"くる",
+                          kanji=u"来る",
+                          type=verbs.Types.KURU,
+                          ending="sp",
+                          english="to come")
+        self.assertEqual(u"来ます", kuru.masu())
+        self.assertEqual(u"きます", kuru.masu(kanji=False))
+
 
 if __name__ == "__main__":
     unittest.main()
