@@ -72,6 +72,53 @@ class TestVerbObject(unittest.TestCase):
                          english="to push, to press")
         self.assertEqual(u"押します", osu.masu())
 
+    def test_get_godan_masu_mu_ending(self):
+        nomu = verbs.Verb(kana=u"のむ",
+                          kanji=u"飲む",
+                          type=verbs.Types.GODAN,
+                          ending="mu",
+                          english="to drink, to swallow")
+        self.assertEqual(u"飲みます", nomu.masu())
+
+    def test_get_godan_masu_ku_ending(self):
+        hiku = verbs.Verb(kana=u"ひく",
+                          kanji=u"弾く",
+                          type=verbs.Types.GODAN,
+                          ending="ku",
+                          english="to play(piano or guitar)")
+        self.assertEqual(u"弾きます", hiku.masu())
+
+    def test_get_godan_masu_gu_ending(self):
+        oyogu = verbs.Verb(kana=u"およぐ",
+                           kanji=u"泳ぐ",
+                           type=verbs.Types.GODAN,
+                           ending="gu",
+                           english="to swim")
+        self.assertEqual(u"泳ぎます", oyogu.masu())
+
+    def test_get_godan_masu_nu_ending(self):
+        shinu = verbs.Verb(kana=u"しぬ",
+                           kanji=u"死ぬ",
+                           type=verbs.Types.GODAN,
+                           ending="nu",
+                           english="to die")
+        self.assertEqual(u"死にます", shinu.masu())
+
+    def test_get_godan_masu_bu_ending(self):
+        asobu = verbs.Verb(kana=u"あそぶ",
+                           kanji=u"遊ぶ",
+                           type=verbs.Types.GODAN,
+                           ending="bu",
+                           english="to play")
+        self.assertEqual(u"遊びます", asobu.masu())
+
+    def test_get_godan_masu_ru_ending(self):
+        kaeru = verbs.Verb(kana=u"かえる",
+                           kanji=u"帰る",
+                           type=verbs.Types.GODAN,
+                           ending="ru",
+                           english="to go home")
+        self.assertEqual(u"帰ります", kaeru.masu())
 
 
 if __name__ == "__main__":

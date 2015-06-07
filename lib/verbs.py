@@ -50,5 +50,17 @@ class Verb(object):
                 return self.kanji[:-1] + u"います"
             elif self.ending is "tsu":
                 return self.kanji[:-1] + u"ちます"
-            else:
+            elif self.ending is "su":
                 return self.kanji[:-1] + u"します"
+            elif self.ending is "mu":
+                return self.kanji[:-1] + u"みます"
+            elif self.ending is "ku":
+                return self.kanji[:-1] + u"きます"
+            elif self.ending is "gu":
+                return self.kanji[:-1] + u"ぎます"
+            elif self.ending is "nu":
+                return self.kanji[:-1] + u"にます"
+            elif self.ending is "bu":
+                return self.kanji[:-1] + u"びます"
+            elif self.ending is "ru":
+                return self.kanji[:-1] + u"ります"
