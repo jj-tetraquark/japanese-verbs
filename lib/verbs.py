@@ -16,6 +16,9 @@ class Types(object):
 class Verb(object):
     ''' Wrapper to handle most verb stuff '''
 
+    PAST = 1
+    PRESENT = 0
+
     def __init__(self, **kwargs):
         self.kana = kwargs.get("kana")
         self.kanji = kwargs.get("kanji")
@@ -43,10 +46,13 @@ class Verb(object):
         return self.kanji if use_kanji and self.kanji else self.kana
 
     def masu(self, **kwargs):
-        stem = self.plain(**kwargs)
+        stem = self.plain(kanji=kwargs.get("kanji", True))
+        negative = kwargs.get("negative", False)
+        tense = kwargs.get("tense", Verb.PRESENT)
 
+        masu_stem = None
         if self.type == Types.ICHIDAN:
-            return stem[:-1] + u"ます"
+            masu_stem = stem[:-1] + u"ま"
         elif self.type == Types.GODAN:
             u_to_i_map = {"u": u"い",
                           "tsu": u"ち",
@@ -57,19 +63,26 @@ class Verb(object):
                           "nu": u"に",
                           "bu": u"び",
                           "ru": u"り"}
-            return stem[:-1] + u_to_i_map[self.ending] + u"ます"
+            masu_stem = stem[:-1] + u_to_i_map[self.ending] + u"ま"
         elif self.type == Types.SURU:
-            return stem[:-2] + u"します"
+            masu_stem = stem[:-2] + u"しま"
         elif self.type == Types.KURU:
             if u"来" in stem:
-                return stem[:-1] + u"ます"
+                masu_stem = stem[:-1] + u"ま"
             else:
-                return stem[:-2] + u"きます"
+                masu_stem = stem[:-2] + u"きま"
         else:
             raise TypeError("Unrecognised verb type!")
 
-    def masu_negative(self, **kwargs):
-        return self.masu(**kwargs)[:-1] + u"せん"
+        conjugated = masu_stem
+        if negative:
+            conjugated += u"せん"
+            if tense is Verb.PAST:
+                conjugated += u"でした"
+        else:
+            if tense is Verb.PAST:
+                conjugated += u"した"
+            else:
+                conjugated += u"す"
 
-    def masu_past(self, **kwargs):
-        return self.masu(**kwargs)[:-1] + u"した"
+        return conjugated

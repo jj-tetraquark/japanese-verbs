@@ -4,6 +4,7 @@
 import unittest
 import lib.database as database
 import lib.verbs as verbs
+from lib.verbs import Verb
 
 DB_PATH = 'data/data.db'
 
@@ -29,60 +30,60 @@ class TestDatabaseConnections(unittest.TestCase):
 class TestVerbObject(unittest.TestCase):
     def setUp(self):
         # declare verbs for use in the tests
-        self.au = verbs.Verb(kana=u"あう", kanji=u"会う",
-                             type=verbs.Types.GODAN, ending="u",
-                             english="to meet")
+        self.au = Verb(kana=u"あう", kanji=u"会う",
+                       type=verbs.Types.GODAN, ending="u",
+                       english="to meet")
 
-        self.segamu = verbs.Verb(kana=u"せがむ",
-                                 type=verbs.Types.GODAN, ending="mu")
+        self.segamu = Verb(kana=u"せがむ",
+                           type=verbs.Types.GODAN, ending="mu")
 
-        self.taberu = verbs.Verb(kana=u"たべる", kanji=u"食べる",
-                                 type=verbs.Types.ICHIDAN, ending="ru")
+        self.taberu = Verb(kana=u"たべる", kanji=u"食べる",
+                           type=verbs.Types.ICHIDAN, ending="ru")
 
-        self.matsu = verbs.Verb(kana=u"まつ", kanji=u"待つ",
-                                type=verbs.Types.GODAN, ending="tsu",
-                                english="to wait")
+        self.matsu = Verb(kana=u"まつ", kanji=u"待つ",
+                          type=verbs.Types.GODAN, ending="tsu",
+                          english="to wait")
 
-        self.osu = verbs.Verb(kana=u"おす", kanji=u"押す",
-                              type=verbs.Types.GODAN, ending="su",
-                              english="to push, to press")
+        self.osu = Verb(kana=u"おす", kanji=u"押す",
+                        type=verbs.Types.GODAN, ending="su",
+                        english="to push, to press")
 
-        self.nomu = verbs.Verb(kana=u"のむ", kanji=u"飲む",
-                               type=verbs.Types.GODAN, ending="mu",
-                               english="to drink, to swallow")
+        self.nomu = Verb(kana=u"のむ", kanji=u"飲む",
+                         type=verbs.Types.GODAN, ending="mu",
+                         english="to drink, to swallow")
 
-        self.hiku = verbs.Verb(kana=u"ひく", kanji=u"弾く",
-                               type=verbs.Types.GODAN, ending="ku",
-                               english="to play(piano or guitar)")
+        self.hiku = Verb(kana=u"ひく", kanji=u"弾く",
+                         type=verbs.Types.GODAN, ending="ku",
+                         english="to play(piano or guitar)")
 
-        self.oyogu = verbs.Verb(kana=u"およぐ", kanji=u"泳ぐ",
-                                type=verbs.Types.GODAN, ending="gu",
-                                english="to swim")
+        self.oyogu = Verb(kana=u"およぐ", kanji=u"泳ぐ",
+                          type=verbs.Types.GODAN, ending="gu",
+                          english="to swim")
 
-        self.shinu = verbs.Verb(kana=u"しぬ", kanji=u"死ぬ",
-                                type=verbs.Types.GODAN, ending="nu",
-                                english="to die")
+        self.shinu = Verb(kana=u"しぬ", kanji=u"死ぬ",
+                          type=verbs.Types.GODAN, ending="nu",
+                          english="to die")
 
-        self.asobu = verbs.Verb(kana=u"あそぶ", kanji=u"遊ぶ",
-                                type=verbs.Types.GODAN, ending="bu",
-                                english="to play")
+        self.asobu = Verb(kana=u"あそぶ", kanji=u"遊ぶ",
+                          type=verbs.Types.GODAN, ending="bu",
+                          english="to play")
 
-        self.kaeru = verbs.Verb(kana=u"かえる", kanji=u"帰る",
-                                type=verbs.Types.GODAN, ending="ru",
-                                english="to go home")
+        self.kaeru = Verb(kana=u"かえる", kanji=u"帰る",
+                          type=verbs.Types.GODAN, ending="ru",
+                          english="to go home")
 
         # often written as kana alone
-        self.suru = verbs.Verb(kana=u"する", kanji=u"",
-                               type=verbs.Types.SURU, ending="irr",
-                               english="to do")
+        self.suru = Verb(kana=u"する", kanji=u"",
+                         type=verbs.Types.SURU, ending="irr",
+                         english="to do")
 
-        self.fukusuru = verbs.Verb(kana=u"ふくする", kanji=u"復する",
-                                   type=verbs.Types.SURU, ending="irr",
-                                   english="to return to normal")
+        self.fukusuru = Verb(kana=u"ふくする", kanji=u"復する",
+                             type=verbs.Types.SURU, ending="irr",
+                             english="to return to normal")
 
-        self.kuru = verbs.Verb(kana=u"くる", kanji=u"来る",
-                               type=verbs.Types.KURU, ending="sp",
-                               english="to come")
+        self.kuru = Verb(kana=u"くる", kanji=u"来る",
+                         type=verbs.Types.KURU, ending="sp",
+                         english="to come")
 
     def test_get_plain(self):
         self.assertEqual(self.au.plain(), u"会う")
@@ -130,12 +131,20 @@ class TestVerbObject(unittest.TestCase):
         self.assertEqual(u"きます", self.kuru.masu(kanji=False))
 
     def test_masu_negative(self):
-        self.assertEqual(u"食べません", self.taberu.masu_negative())
-        self.assertEqual(u"たべません", self.taberu.masu_negative(kanji=False))
+        self.assertEqual(u"食べません", self.taberu.masu(negative=True))
+        self.assertEqual(u"たべません", self.taberu.masu(negative=True,
+                                                              kanji=False))
 
     def test_masu_past(self):
-        self.assertEqual(u"食べました", self.taberu.masu_past())
-        self.assertEqual(u"たべました", self.taberu.masu_past(kanji=False))
+        self.assertEqual(u"食べました", self.taberu.masu(tense=Verb.PAST))
+        self.assertEqual(u"たべました", self.taberu.masu(tense=Verb.PAST,
+                                                              kanji=False))
+
+    def test_masu_negative_past(self):
+        self.assertEqual(u"食べませんでした",
+                         self.taberu.masu(
+                             negative=True,
+                             tense=Verb.PAST))
 
 
 if __name__ == "__main__":
