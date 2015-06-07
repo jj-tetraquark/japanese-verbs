@@ -43,4 +43,7 @@ class Verb(object):
 
     #TODO: should take kwargs with kanji=True/False
     def masu(self):
-        return self.kanji[:-1] + u"ます"
+        if self.type is Types.ICHIDAN:
+            return self.kanji[:-1] + u"ます"
+        else:
+            return self.kanji[:-1] + u"います"

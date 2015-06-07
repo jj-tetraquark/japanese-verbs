@@ -48,5 +48,13 @@ class TestVerbObject(unittest.TestCase):
                             ending="ru")
         self.assertEqual(u"食べます", taberu.masu())
 
+    def test_get_godan_masu_u_ending(self):
+        au = verbs.Verb(kana=u"あう",
+                        kanji=u"会う",
+                        type=verbs.Types.GODAN,
+                        ending="u",
+                        english="to meet")
+        self.assertEqual(u"会います", au.masu())
+
 if __name__ == "__main__":
     unittest.main()
