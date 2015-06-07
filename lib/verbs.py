@@ -67,3 +67,6 @@ class Verb(object):
                 return stem[:-2] + u"きます"
         else:
             raise TypeError("Unrecognised verb type!")
+
+    def masu_negative(self, **kwargs):
+        return self.masu(**kwargs)[:-1] + u"せん"
