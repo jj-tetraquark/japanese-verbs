@@ -50,6 +50,20 @@ class Verb(object):
         negative = kwargs.get("negative", False)
         tense = kwargs.get("tense", Verb.PRESENT)
 
+        conjugated = self.__get_masu_stem(stem)
+        if negative:
+            conjugated += u"せん"
+            if tense is Verb.PAST:
+                conjugated += u"でした"
+        else:
+            if tense is Verb.PAST:
+                conjugated += u"した"
+            else:
+                conjugated += u"す"
+
+        return conjugated
+
+    def __get_masu_stem(self, stem):
         masu_stem = None
         if self.type == Types.ICHIDAN:
             masu_stem = stem[:-1] + u"ま"
@@ -74,15 +88,5 @@ class Verb(object):
         else:
             raise TypeError("Unrecognised verb type!")
 
-        conjugated = masu_stem
-        if negative:
-            conjugated += u"せん"
-            if tense is Verb.PAST:
-                conjugated += u"でした"
-        else:
-            if tense is Verb.PAST:
-                conjugated += u"した"
-            else:
-                conjugated += u"す"
+        return masu_stem
 
-        return conjugated
