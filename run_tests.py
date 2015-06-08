@@ -95,6 +95,46 @@ class TestVerbObject(unittest.TestCase):
     def test_get_ichidan_plain_negative(self):
         self.assertEqual(u"食べない", self.taberu.plain(negative=True))
 
+    def test_get_godan_plain_negative_u_ending(self):
+        self.assertEqual(u"会わない", self.au.plain(negative=True))
+
+    def test_get_godan_plain_negative_tsu_ending(self):
+        self.assertEqual(u"待たない", self.matsu.plain(negative=True))
+
+    def test_get_godan_plain_negative_su_ending(self):
+        self.assertEqual(u"押さない", self.osu.plain(negative=True))
+
+    def test_get_godan_plain_negative_mu_ending(self):
+        self.assertEqual(u"飲まない", self.nomu.plain(negative=True))
+
+    def test_get_godan_plain_negative_ku_ending(self):
+        self.assertEqual(u"弾かない", self.hiku.plain(negative=True))
+
+    def test_get_godan_plain_negative_gu_ending(self):
+        self.assertEqual(u"泳がない", self.oyogu.plain(negative=True))
+
+    def test_get_godan_plain_negative_nu_ending(self):
+        self.assertEqual(u"死なない", self.shinu.plain(negative=True))
+
+    def test_get_godan_plain_negative_bu_ending(self):
+        self.assertEqual(u"遊ばない", self.asobu.plain(negative=True))
+
+    def test_get_godan_plain_negative_ru_ending(self):
+        self.assertEqual(u"帰らない", self.kaeru.plain(negative=True))
+
+    def test_get_aru_plain_negative(self):
+        aru = Verb(kana=u"ある",
+                   type=verbs.Types.GODAN, ending="irr",
+                   english="to be (inanimate objects), to exist")
+        self.assertEqual(u"ない", aru.plain(negative=True))
+
+    def test_get_suru_plain_negative(self):
+        self.assertEqual(u"しない", self.suru.plain(negative=True))
+
+    def test_get_kuru_plain_negative(self):
+        self.assertEqual(u"来ない", self.kuru.plain(negative=True))
+        self.assertEqual(u"こない", self.kuru.plain(negative=True, kanji=False))
+
     def test_get_ichidan_masu(self):
         self.assertEqual(u"食べます", self.taberu.masu())
 

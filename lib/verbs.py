@@ -46,10 +46,32 @@ class Verb(object):
         negative = kwargs.get("negative", False)
         stem = self.kanji if use_kanji and self.kanji else self.kana
 
-        if negative:
-            return stem[:-1] + u"ない"
-        else:
+        if not negative:
             return stem
+
+        if self.type == Types.ICHIDAN:
+            return stem[:-1] + u"ない"
+        elif self.type == Types.GODAN:
+            if self.kana == u"ある":
+                return u"ない"
+
+            u_to_a_map = {"u": u"わ",
+                          "tsu": u"た",
+                          "su": u"さ",
+                          "mu": u"ま",
+                          "ku": u"か",
+                          "gu": u"が",
+                          "nu": u"な",
+                          "bu": u"ば",
+                          "ru": u"ら"}
+            return stem[:-1] + u_to_a_map[self.ending] + u"ない"
+        elif self.type == Types.SURU:
+            return u"しない"
+        elif self.type == Types.KURU:
+            if u"来" in stem:
+                return stem[:-1] + u"ない"
+            else:
+                return stem[:-2] + u"こない"
 
     def masu(self, **kwargs):
         plain_form = self.plain(kanji=kwargs.get("kanji", True))
@@ -95,4 +117,3 @@ class Verb(object):
             raise TypeError("Unrecognised verb type!")
 
         return masu_stem
-
