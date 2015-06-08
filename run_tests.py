@@ -92,6 +92,9 @@ class TestVerbObject(unittest.TestCase):
         #test verb with no kanji
         self.assertEqual(self.segamu.plain(), u"せがむ")
 
+    def test_get_ichidan_plain_negative(self):
+        self.assertEqual(u"食べない", self.taberu.plain(negative=True))
+
     def test_get_ichidan_masu(self):
         self.assertEqual(u"食べます", self.taberu.masu())
 
@@ -145,7 +148,6 @@ class TestVerbObject(unittest.TestCase):
                          self.taberu.masu(
                              negative=True,
                              tense=Verb.PAST))
-
 
 if __name__ == "__main__":
     unittest.main()

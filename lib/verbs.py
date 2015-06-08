@@ -43,14 +43,20 @@ class Verb(object):
 
     def plain(self, **kwargs):
         use_kanji = kwargs.get("kanji", True)
-        return self.kanji if use_kanji and self.kanji else self.kana
+        negative = kwargs.get("negative", False)
+        stem = self.kanji if use_kanji and self.kanji else self.kana
+
+        if negative:
+            return stem[:-1] + u"ない"
+        else:
+            return stem
 
     def masu(self, **kwargs):
-        stem = self.plain(kanji=kwargs.get("kanji", True))
+        plain_form = self.plain(kanji=kwargs.get("kanji", True))
         negative = kwargs.get("negative", False)
         tense = kwargs.get("tense", Verb.PRESENT)
 
-        conjugated = self.__get_masu_stem(stem)
+        conjugated = self.__get_masu_stem(plain_form)
         if negative:
             conjugated += u"せん"
             if tense is Verb.PAST:
