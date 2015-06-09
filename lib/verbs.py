@@ -71,7 +71,10 @@ class Verb(object):
 
     def te(self, **kwargs):
         plain_form = self.plain(kanji=kwargs.get("kanji", True))
-        return plain_form[:-1] + u"て"
+        if self.type == Types.ICHIDAN:
+            return plain_form[:-1] + u"て"
+        else:
+            return plain_form[:-1] + u"って"
 
     def __get_plain_negative_stem(self, stem):
         neg_stem = stem[:-1]

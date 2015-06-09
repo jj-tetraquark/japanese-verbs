@@ -88,6 +88,7 @@ class TestVerbClass(unittest.TestCase):
 
 
 class TestVerbPlainForm(TestVerbClass):
+
     def test_get_plain(self):
         self.assertEqual(self.au.plain(), u"会う")
         self.assertEqual(self.au.plain(kanji=False), u"あう")
@@ -201,6 +202,14 @@ class TestVerbTeForm(TestVerbClass):
     def test_get_ichidan_te_form(self):
         self.assertEqual(u"食べて", self.taberu.te())
 
+    def test_get_godan_te_form_u_ending(self):
+        self.assertEqual(u"会って", self.au.te())
+
+    def test_get_godan_te_form_tsu_ending(self):
+        self.assertEqual(u"待って", self.matsu.te())
+
+    def test_get_godan_masu_ru_ending(self):
+        self.assertEqual(u"帰って", self.kaeru.te())
 
 if __name__ == "__main__":
     unittest.main()
