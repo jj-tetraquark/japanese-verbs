@@ -49,29 +49,28 @@ class Verb(object):
         if not negative:
             return stem
 
-        if self.type == Types.ICHIDAN:
-            return stem[:-1] + u"ない"
-        elif self.type == Types.GODAN:
+        neg_stem = stem[:-1]
+        if self.type == Types.GODAN:
             if self.kana == u"ある":
-                return u"ない"
-
-            u_to_a_map = {"u": u"わ",
-                          "tsu": u"た",
-                          "su": u"さ",
-                          "mu": u"ま",
-                          "ku": u"か",
-                          "gu": u"が",
-                          "nu": u"な",
-                          "bu": u"ば",
-                          "ru": u"ら"}
-            return stem[:-1] + u_to_a_map[self.ending] + u"ない"
-        elif self.type == Types.SURU:
-            return u"しない"
-        elif self.type == Types.KURU:
-            if u"来" in stem:
-                return stem[:-1] + u"ない"
+                neg_stem = ""
             else:
-                return stem[:-2] + u"こない"
+                u_to_a_map = {"u": u"わ",
+                              "tsu": u"た",
+                              "su": u"さ",
+                              "mu": u"ま",
+                              "ku": u"か",
+                              "gu": u"が",
+                              "nu": u"な",
+                              "bu": u"ば",
+                              "ru": u"ら"}
+                neg_stem += u_to_a_map[self.ending]
+        elif self.type == Types.SURU:
+            neg_stem = u"し"
+        elif self.type == Types.KURU:
+            if not u"来" in neg_stem:
+                neg_stem = u"こ"
+
+        return neg_stem + u"ない"
 
     def masu(self, **kwargs):
         plain_form = self.plain(kanji=kwargs.get("kanji", True))
