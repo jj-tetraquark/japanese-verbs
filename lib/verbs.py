@@ -48,7 +48,32 @@ class Verb(object):
 
         if not negative:
             return stem
+        else:
+            return self.__get_plain_negative_stem(stem) + u"ない"
 
+    def masu(self, **kwargs):
+        plain_form = self.plain(kanji=kwargs.get("kanji", True))
+        negative = kwargs.get("negative", False)
+        tense = kwargs.get("tense", Verb.PRESENT)
+
+        conjugated = self.__get_masu_stem(plain_form)
+        if negative:
+            conjugated += u"せん"
+            if tense is Verb.PAST:
+                conjugated += u"でした"
+        else:
+            if tense is Verb.PAST:
+                conjugated += u"した"
+            else:
+                conjugated += u"す"
+
+        return conjugated
+
+    def te(self, **kwargs):
+        plain_form = self.plain(kanji=kwargs.get("kanji", True))
+        return plain_form[:-1] + u"て"
+
+    def __get_plain_negative_stem(self, stem):
         neg_stem = stem[:-1]
         if self.type == Types.GODAN:
             if self.kana == u"ある":
@@ -70,25 +95,7 @@ class Verb(object):
             if not u"来" in neg_stem:
                 neg_stem = u"こ"
 
-        return neg_stem + u"ない"
-
-    def masu(self, **kwargs):
-        plain_form = self.plain(kanji=kwargs.get("kanji", True))
-        negative = kwargs.get("negative", False)
-        tense = kwargs.get("tense", Verb.PRESENT)
-
-        conjugated = self.__get_masu_stem(plain_form)
-        if negative:
-            conjugated += u"せん"
-            if tense is Verb.PAST:
-                conjugated += u"でした"
-        else:
-            if tense is Verb.PAST:
-                conjugated += u"した"
-            else:
-                conjugated += u"す"
-
-        return conjugated
+        return neg_stem
 
     def __get_masu_stem(self, stem):
         masu_stem = None

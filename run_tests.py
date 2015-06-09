@@ -189,5 +189,8 @@ class TestVerbObject(unittest.TestCase):
                              negative=True,
                              tense=Verb.PAST))
 
+    def test_get_ichidan_te_form(self):
+        self.assertEqual(u"食べて", self.taberu.te())
+
 if __name__ == "__main__":
     unittest.main()
