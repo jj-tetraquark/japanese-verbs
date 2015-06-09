@@ -204,12 +204,31 @@ class TestVerbTeForm(TestVerbClass):
 
     def test_get_godan_te_form_u_ending(self):
         self.assertEqual(u"会って", self.au.te())
+        self.assertEqual(u"あって", self.au.te(kanji=False))
 
     def test_get_godan_te_form_tsu_ending(self):
         self.assertEqual(u"待って", self.matsu.te())
 
-    def test_get_godan_masu_ru_ending(self):
+    def test_get_godan_te_form_ru_ending(self):
         self.assertEqual(u"帰って", self.kaeru.te())
+
+    def test_get_godan_te_form_mu_ending(self):
+        self.assertEqual(u"飲んで", self.nomu.te())
+
+    def test_get_godan_te_form_bu_ending(self):
+        self.assertEqual(u"遊んで", self.asobu.te())
+
+    def test_get_godan_te_form_nu_ending(self):
+        self.assertEqual(u"死んで", self.shinu.te())
+
+    def test_get_godan_te_form_ku_ending(self):
+        self.assertEqual(u"弾いて", self.hiku.te())
+
+    def test_get_godan_te_form_gu_ending(self):
+        self.assertEqual(u"泳いで", self.oyogu.te())
+
+    def test_get_godan_te_form_su_ending(self):
+        self.assertEqual(u"押して", self.osu.te())
 
 if __name__ == "__main__":
     unittest.main()

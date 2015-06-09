@@ -78,6 +78,12 @@ class Verb(object):
                 return plain_form[:-1] + u"って"
             elif self.ending in ["bu", "nu", "mu"]:
                 return plain_form[:-1] + u"んで"
+            elif self.ending == "ku":
+                return plain_form[:-1] + u"いて"
+            elif self.ending == "gu":
+                return plain_form[:-1] + u"いで"
+            elif self.ending == "su":
+                return plain_form[:-1] + u"して"
 
     def __get_plain_negative_stem(self, stem):
         neg_stem = stem[:-1]
