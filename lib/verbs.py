@@ -74,7 +74,10 @@ class Verb(object):
         if self.type == Types.ICHIDAN:
             return plain_form[:-1] + u"て"
         else:
-            return plain_form[:-1] + u"って"
+            if self.ending in ["u", "tsu", "ru"]:
+                return plain_form[:-1] + u"って"
+            elif self.ending in ["bu", "nu", "mu"]:
+                return plain_form[:-1] + u"んで"
 
     def __get_plain_negative_stem(self, stem):
         neg_stem = stem[:-1]
