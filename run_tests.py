@@ -27,7 +27,8 @@ class TestDatabaseConnections(unittest.TestCase):
             self.assertEqual(verb["type"], v_type)
 
 
-class TestVerbObject(unittest.TestCase):
+class TestVerbClass(unittest.TestCase):
+    ''' Common setup in this class, proper tests below'''
     def setUp(self):
         # declare verbs for use in the tests
         self.au = Verb(kana=u"あう", kanji=u"会う",
@@ -85,6 +86,8 @@ class TestVerbObject(unittest.TestCase):
                          type=verbs.Types.KURU, ending="sp",
                          english="to come")
 
+
+class TestVerbPlainForm(TestVerbClass):
     def test_get_plain(self):
         self.assertEqual(self.au.plain(), u"会う")
         self.assertEqual(self.au.plain(kanji=False), u"あう")
@@ -134,6 +137,9 @@ class TestVerbObject(unittest.TestCase):
     def test_get_kuru_plain_negative(self):
         self.assertEqual(u"来ない", self.kuru.plain(negative=True))
         self.assertEqual(u"こない", self.kuru.plain(negative=True, kanji=False))
+
+
+class TestVerbMasuForm(TestVerbClass):
 
     def test_get_ichidan_masu(self):
         self.assertEqual(u"食べます", self.taberu.masu())
@@ -189,8 +195,12 @@ class TestVerbObject(unittest.TestCase):
                              negative=True,
                              tense=Verb.PAST))
 
+
+class TestVerbTeForm(TestVerbClass):
+
     def test_get_ichidan_te_form(self):
         self.assertEqual(u"食べて", self.taberu.te())
+
 
 if __name__ == "__main__":
     unittest.main()
