@@ -74,7 +74,7 @@ class Verb(object):
         if self.type == Types.ICHIDAN:
             return plain_form[:-1] + u"て"
         else:
-            if self.ending in ["u", "tsu", "ru"]:
+            if self.ending in ["u", "tsu", "ru", "iku"]:
                 return plain_form[:-1] + u"って"
             elif self.ending in ["bu", "nu", "mu"]:
                 return plain_form[:-1] + u"んで"

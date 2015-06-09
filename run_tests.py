@@ -86,6 +86,11 @@ class TestVerbClass(unittest.TestCase):
                          type=verbs.Types.KURU, ending="sp",
                          english="to come")
 
+        self.iku = Verb(kana=u"いく", kanji=u"行く",
+                        type=verbs.Types.GODAN, ending="iku",
+                        english="to go, to move")
+
+
 
 class TestVerbPlainForm(TestVerbClass):
 
@@ -229,6 +234,9 @@ class TestVerbTeForm(TestVerbClass):
 
     def test_get_godan_te_form_su_ending(self):
         self.assertEqual(u"押して", self.osu.te())
+
+    def test_get_iku_te_form(self):
+        self.assertEqual(u"行って", self.iku.te())
 
 if __name__ == "__main__":
     unittest.main()
