@@ -6,6 +6,7 @@ import lib.database as database
 import lib.verbs as verbs
 from lib.verbs import Verb
 from lib.Quiz import Question
+from lib.Quiz import Quiz
 
 DB_PATH = 'data/data.db'
 
@@ -37,6 +38,14 @@ class TestQuiz(unittest.TestCase):
         self.assertFalse(question.answer("not the answer"))
         self.assertTrue(question.answer(the_answer))
 
+
+    def test_quiz_construction(self):
+        ''' should be constructed with a number of questions and a function that
+            returns a question-answer tuple '''
+
+        # Create a quiz with 10 questions
+        quiz = Quiz(10, lambda: tuple(["The question", "The answer"]))
+        self.assertEqual(quiz.length(), 10)
 
 class TestVerbClass(unittest.TestCase):
     ''' Common setup in this class, proper tests below'''
