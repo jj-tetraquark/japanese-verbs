@@ -5,6 +5,7 @@ import unittest
 import lib.database as database
 import lib.verbs as verbs
 from lib.verbs import Verb
+from lib.Quiz import Question
 
 DB_PATH = 'data/data.db'
 
@@ -25,6 +26,16 @@ class TestDatabaseConnections(unittest.TestCase):
         for v_type in verbs.Types.All():
             verb = self.db.get_verb(type=v_type)
             self.assertEqual(verb["type"], v_type)
+
+class TestQuiz(unittest.TestCase):
+    def test_question_class(self):
+        the_question = "What is the answer to this question"
+        the_answer = "the answer of course"
+
+        question = Question(the_question, the_answer)
+        self.assertEqual(question.ask(), the_question)
+        self.assertFalse(question.answer("not the answer"))
+        self.assertTrue(question.answer(the_answer))
 
 
 class TestVerbClass(unittest.TestCase):
@@ -89,7 +100,6 @@ class TestVerbClass(unittest.TestCase):
         self.iku = Verb(kana=u"いく", kanji=u"行く",
                         type=verbs.Types.GODAN, ending="iku",
                         english="to go, to move")
-
 
 
 class TestVerbPlainForm(TestVerbClass):
@@ -237,6 +247,7 @@ class TestVerbTeForm(TestVerbClass):
 
     def test_get_iku_te_form(self):
         self.assertEqual(u"行って", self.iku.te())
+
 
 if __name__ == "__main__":
     unittest.main()
