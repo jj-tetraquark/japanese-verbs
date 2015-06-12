@@ -5,8 +5,8 @@ import unittest
 import lib.database as database
 import lib.verbs as verbs
 from lib.verbs import Verb
-from lib.Quiz import Question
-from lib.Quiz import Quiz
+from lib.quiz import Question
+from lib.quiz import Quiz
 
 DB_PATH = 'data/data.db'
 
@@ -46,6 +46,33 @@ class TestQuiz(unittest.TestCase):
         # Create a quiz with 10 questions
         quiz = Quiz(10, lambda: tuple(["The question", "The answer"]))
         self.assertEqual(quiz.length(), 10)
+
+    def test_quiz_answering_and_grading(self):
+        number_of_times_called = [0]  # nonlocal would be better, but python 2.7
+        def question_generator():
+            number_of_times_called[0] += 1
+            return tuple(["Question {}?".format(number_of_times_called[0]),
+                          ("yes" if number_of_times_called[0] %2 == 0 else "no")])
+
+        test_quiz = Quiz(10, question_generator)
+
+        question_number = 1
+        while not test_quiz.finished():
+            self.assertEqual("Question {}?".format(question_number),
+                             test_quiz.ask_question())
+            result = test_quiz.answer_question("yes")
+
+            # this is testing the return type of result
+            if result.correct:
+                self.assertEqual(result.correct_answer, "yes")
+            else:
+                self.assertEqual(result.correct_answer, "no")
+
+            question_number += 1
+
+        self.assertEqual(test_quiz.answered_correctly(), 5);
+        self.assertEqual(test_quiz.score(), 50.0)
+
 
 class TestVerbClass(unittest.TestCase):
     ''' Common setup in this class, proper tests below'''
