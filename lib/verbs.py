@@ -27,19 +27,11 @@ class Verb(object):
         self.english = kwargs.get("english")
 
         if not self.kana:
-            raise ValueError("kana cannot be empty")
+            raise TypeError("kana cannot be empty")
         if not self.type in Types.All():
-            raise ValueError("Invalid type passed: {0}".format(self.type))
+            raise TypeError("Invalid type passed: {0}".format(self.type))
         if not self.ending:
-            raise ValueError("ending cannot be empty")
-
-    @classmethod
-    def from_dict(cls, dic):
-        return cls(kana=dic["kana"],
-                   kanji=dic["kanji"],
-                   type=dic["type"],
-                   ending=dic["ending"],
-                   english=dic["english"])
+            raise TypeError("ending cannot be empty")
 
     def plain(self, **kwargs):
         use_kanji = kwargs.get("kanji", True)
@@ -84,6 +76,7 @@ class Verb(object):
                 return plain_form[:-1] + u"いで"
             elif self.ending == "su":
                 return plain_form[:-1] + u"して"
+        #todo suru and kuru
 
     def __get_plain_negative_stem(self, stem):
         neg_stem = stem[:-1]
