@@ -17,7 +17,7 @@ class Verb(object):
     ''' Wrapper to handle most verb stuff '''
 
     PAST = 1
-    PRESENT = 0
+    NON_PAST = 0
 
     def __init__(self, **kwargs):
         self.kana = kwargs.get("kana")
@@ -46,7 +46,7 @@ class Verb(object):
     def masu(self, **kwargs):
         plain_form = self.plain(kanji=kwargs.get("kanji", True))
         negative = kwargs.get("negative", False)
-        tense = kwargs.get("tense", Verb.PRESENT)
+        tense = kwargs.get("tense", Verb.NON_PAST)
 
         conjugated = self.__get_masu_stem(plain_form)
         if negative:
