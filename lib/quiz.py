@@ -42,16 +42,11 @@ class Quiz(object):
     def ask_question(self):
         return self.questions[self.current_question]
 
-    class Result:
-        def __init__(self, correct, actual_answer):
-            self.correct = correct
-            self.correct_answer = actual_answer
-
     def answer_question(self, answer):
         question = self.questions[self.current_question]
         self.current_question += 1
-        result = self.Result(question.answer(answer), question.correct_answer)
-        if result.correct:
+        result = question.answer(answer)
+        if result:
             self.correct_answers += 1
 
         return result

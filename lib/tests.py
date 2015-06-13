@@ -88,10 +88,10 @@ class TestQuiz(unittest.TestCase):
             result = test_quiz.answer_question("yes")
 
             # this is testing the return type of result
-            if result.correct:
-                self.assertEqual(result.correct_answer, "yes")
+            if result:
+                self.assertEqual(current_question.correct_answer, "yes")
             else:
-                self.assertEqual(result.correct_answer, "no")
+                self.assertEqual(current_question.correct_answer, "no")
 
             question_number += 1
 
