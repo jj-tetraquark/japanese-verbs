@@ -40,6 +40,8 @@ class TestVerbTestController(unittest.TestCase):
 
         self.assertTrue(found_u, "No plain verb found in question")
 
+        self.assertTrue(False, "Finish the goddamn test!")
+
 
 if __name__ == "__main__":
     unittest.main()
