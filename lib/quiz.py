@@ -40,7 +40,7 @@ class Quiz(object):
         return self.current_question == self.number_of_questions
 
     def ask_question(self):
-        return self.questions[self.current_question].ask()
+        return self.questions[self.current_question]
 
     class Result:
         def __init__(self, correct, actual_answer):

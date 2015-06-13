@@ -84,7 +84,7 @@ class TestQuiz(unittest.TestCase):
         while not test_quiz.finished():
             current_question = test_quiz.ask_question()
             self.assertEqual(("Question {}?".format(question_number), None),
-                             current_question)
+                             current_question.ask())
             result = test_quiz.answer_question("yes")
 
             # this is testing the return type of result
