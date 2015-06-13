@@ -77,11 +77,11 @@ class Verb(object):
             I.TE_FORM:
             lambda k: self.te(kanji=k),
             I.PASSIVE:
-            lambda k: not_implemented,
+            not_implemented,
             I.CAUSATIVE:
-            lambda k: not_implemented,
+            not_implemented,
             I.PASSIVE_CAUSATIVE:
-            lambda k: not_implemented
+            not_implemented
         }
         return inflection_method_lookup[infl](kanji)
 
