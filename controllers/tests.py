@@ -27,10 +27,14 @@ class TestVerbTestController(unittest.TestCase):
                             })
 
         question = controller.get_question()
+
+        self.assertTrue(question.ask()[0] is Inf.POLITE or
+                        question.ask()[0] is Inf.NEGATIVE_POLITE)
+
         found_u = False
         # bit of a stretch but all plain form verbs should end in u
         for u in [u"う", u"つ", u"す", u"む", u"く", u"ぐ", u"ぬ", u"ぶ", u"る"]:
-            if u in question:
+            if u in question.ask()[1]:
                 found_u = True
                 break
 
