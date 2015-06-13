@@ -197,6 +197,8 @@ class TestVerbPlainForm(TestVerbClass):
                          u"会う")
         self.assertEqual(self.au.get_inflection(
                          verbs.Inflections.PLAIN, kanji=False), u"あう")
+        self.assertEqual(u"会わない", self.au.get_inflection(
+                         verbs.Inflections.NEGATIVE_PLAIN))
 
 
 class TestVerbMasuForm(TestVerbClass):
@@ -255,6 +257,16 @@ class TestVerbMasuForm(TestVerbClass):
                              negative=True,
                              tense=Verb.PAST))
 
+    def test_get_inflection(self):
+        self.assertEqual(u"食べます", self.taberu.get_inflection(
+                         verbs.Inflections.POLITE))
+        self.assertEqual(u"食べません", self.taberu.get_inflection(
+                         verbs.Inflections.NEGATIVE_POLITE))
+        self.assertEqual(u"食べました", self.taberu.get_inflection(
+                         verbs.Inflections.PAST_POLITE))
+        self.assertEqual(u"食べませんでした", self.taberu.get_inflection(
+                         verbs.Inflections.NEGATIVE_PAST_POLITE))
+
 
 class TestVerbTeForm(TestVerbClass):
 
@@ -291,6 +303,10 @@ class TestVerbTeForm(TestVerbClass):
 
     def test_get_iku_te_form(self):
         self.assertEqual(u"行って", self.iku.te())
+
+    def test_get_inflection(self):
+        self.assertEqual(u"食べて", self.taberu.get_inflection(
+                         verbs.Inflections.TE_FORM))
 
 
 if __name__ == "__main__":

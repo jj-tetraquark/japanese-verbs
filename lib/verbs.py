@@ -54,8 +54,36 @@ class Verb(object):
             raise TypeError("ending cannot be empty")
 
     def get_inflection(self, infl, kanji=True):
-        if infl == Inflections.PLAIN:
-            return self.plain(kanji=kanji)
+        I = Inflections
+
+        not_implemented = lambda k: NotImplementedError("Not yet")
+        inflection_method_lookup = {
+            I.PLAIN:
+            lambda k: self.plain(kanji=k),
+            I.NEGATIVE_PLAIN:
+            lambda k: self.plain(negative=True, kanji=k),
+            I.PAST_PLAIN:
+            not_implemented,
+            I.NEGATIVE_PAST_PLAIN:
+            not_implemented,
+            I.POLITE:
+            lambda k: self.masu(kanji=k),
+            I.NEGATIVE_POLITE:
+            lambda k: self.masu(negative=True, kanji=k),
+            I.PAST_POLITE:
+            lambda k: self.masu(tense=Verb.PAST, kanji=k),
+            I.NEGATIVE_PAST_POLITE:
+            lambda k: self.masu(tense=Verb.PAST, negative=True, kanji=k),
+            I.TE_FORM:
+            lambda k: self.te(kanji=k),
+            I.PASSIVE:
+            lambda k: not_implemented,
+            I.CAUSATIVE:
+            lambda k: not_implemented,
+            I.PASSIVE_CAUSATIVE:
+            lambda k: not_implemented
+        }
+        return inflection_method_lookup[infl](kanji)
 
     def plain(self, **kwargs):
         use_kanji = kwargs.get("kanji", True)
