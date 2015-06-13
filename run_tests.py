@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python -m
 # -*- coding: utf-8 -*-
 
 import unittest
@@ -28,6 +28,7 @@ class TestDatabaseConnections(unittest.TestCase):
             verb = self.db.get_verb(type=v_type)
             self.assertEqual(verb["type"], v_type)
 
+
 class TestQuiz(unittest.TestCase):
     def test_question_class(self):
         the_question = "What is the answer to this question"
@@ -38,21 +39,24 @@ class TestQuiz(unittest.TestCase):
         self.assertFalse(question.answer("not the answer"))
         self.assertTrue(question.answer(the_answer))
 
-
     def test_quiz_construction(self):
-        ''' should be constructed with a number of questions and a function that
-            returns a question-answer tuple '''
+        ''' should be constructed with a number of questions and a function
+            that returns a question-answer tuple '''
 
         # Create a quiz with 10 questions
         quiz = Quiz(10, lambda: tuple(["The question", "The answer"]))
         self.assertEqual(quiz.length(), 10)
 
     def test_quiz_answering_and_grading(self):
-        number_of_times_called = [0]  # nonlocal would be better, but python 2.7
+
+        # using nonlocal here would be better, but python 2.7
+        number_of_times_called = [0]
+
         def question_generator():
             number_of_times_called[0] += 1
             return tuple(["Question {}?".format(number_of_times_called[0]),
-                          ("yes" if number_of_times_called[0] %2 == 0 else "no")])
+                          ("yes" if number_of_times_called[0] % 2 == 0
+                              else "no")])
 
         test_quiz = Quiz(10, question_generator)
 
@@ -70,7 +74,7 @@ class TestQuiz(unittest.TestCase):
 
             question_number += 1
 
-        self.assertEqual(test_quiz.answered_correctly(), 5);
+        self.assertEqual(test_quiz.answered_correctly(), 5)
         self.assertEqual(test_quiz.score(), 50.0)
 
 
