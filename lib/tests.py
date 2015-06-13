@@ -8,16 +8,14 @@ from lib.verbs import Verb
 from lib.quiz import Question
 from lib.quiz import Quiz
 
-DB_PATH = 'data/data.db'
-
 
 @unittest.skipIf(
-    not database.is_initialized(DB_PATH),
+    not database.is_initialized(database.DEFAULT_DATABASE_PATH),
     "Database not initialized, need install before running this suite")
 class TestDatabaseConnections(unittest.TestCase):
 
     def setUp(self):
-        self.db = database.Database(DB_PATH)
+        self.db = database.Database(database.DEFAULT_DATABASE_PATH)
 
     def test_get_random_verb(self):
         verb = self.db.get_verb()
@@ -193,6 +191,12 @@ class TestVerbPlainForm(TestVerbClass):
     def test_get_kuru_plain_negative(self):
         self.assertEqual(u"来ない", self.kuru.plain(negative=True))
         self.assertEqual(u"こない", self.kuru.plain(negative=True, kanji=False))
+
+    def test_get_inflection(self):
+        self.assertEqual(self.au.get_inflection(verbs.Inflections.PLAIN),
+                         u"会う")
+        self.assertEqual(self.au.get_inflection(
+                         verbs.Inflections.PLAIN, kanji=False), u"あう")
 
 
 class TestVerbMasuForm(TestVerbClass):

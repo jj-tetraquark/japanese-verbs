@@ -13,6 +13,26 @@ class Types(object):
         return [cls.ICHIDAN, cls.GODAN, cls.KURU, cls.SURU]
 
 
+class Inflections(object):
+    PLAIN = 1
+    NEGATIVE_PLAIN = 2
+    PAST_PLAIN = 3
+    NEGATIVE_PAST_PLAIN = 4
+    POLITE = 5
+    NEGATIVE_POLITE = 6
+    PAST_POLITE = 7
+    NEGATIVE_PAST_POLITE = 8
+    TE_FORM = 9
+    PASSIVE = 10
+    CAUSATIVE = 11
+    PASSIVE_CAUSATIVE = 12
+
+    @classmethod
+    def All(cls):
+        return [i for i in dir(cls) if not callable(i)
+                and not (i.startswith("__") or i is "All")]
+
+
 class Verb(object):
     ''' Wrapper to handle most verb stuff '''
 
@@ -32,6 +52,10 @@ class Verb(object):
             raise TypeError("Invalid type passed: {0}".format(self.type))
         if not self.ending:
             raise TypeError("ending cannot be empty")
+
+    def get_inflection(self, infl, kanji=True):
+        if infl == Inflections.PLAIN:
+            return self.plain(kanji=kanji)
 
     def plain(self, **kwargs):
         use_kanji = kwargs.get("kanji", True)
