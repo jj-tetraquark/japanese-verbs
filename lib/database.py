@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 
 
 JMDICT_URL = "http://ftp.monash.edu.au/pub/nihongo/JMdict_e.gz"
+DEFAULT_DATABASE_PATH = "data/data.db"
 
 
 def init(path, jlpt_dictionary):
