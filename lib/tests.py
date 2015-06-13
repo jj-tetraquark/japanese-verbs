@@ -28,21 +28,41 @@ class TestDatabaseConnections(unittest.TestCase):
 
 
 class TestQuiz(unittest.TestCase):
-    def test_question_class(self):
-        the_question = "What is the answer to this question"
-        the_answer = "the answer of course"
+    class TestObj(object):
+        def __init__(self, answer, predicate=None):
+            self.answer = answer
+            self.predicate = predicate
 
-        question = Question(the_question, the_answer)
-        self.assertEqual(question.ask(), the_question)
+        def the_predicate(self):
+            return self.predicate
+
+        def the_answer(self):
+            return self.answer
+
+    def test_question_class(self):
+
+        the_question = "What is the answer to this question?"
+        the_predicate = "given this"
+        the_answer = "the answer of course"
+        testObj = self.TestObj(the_answer, the_predicate)
+
+        question = Question(testObj, the_question,
+                            lambda o: o.the_answer(),
+                            lambda o: o.the_predicate())
+
+        self.assertEqual(question.ask(), (the_question, the_predicate))
         self.assertFalse(question.answer("not the answer"))
         self.assertTrue(question.answer(the_answer))
 
     def test_quiz_construction(self):
         ''' should be constructed with a number of questions and a function
-            that returns a question-answer tuple '''
+            that returns a dictionary '''
 
         # Create a quiz with 10 questions
-        quiz = Quiz(10, lambda: tuple(["The question", "The answer"]))
+        quiz = Quiz(10, lambda: {"data": self.TestObj("Answer"),
+                                 "question": "The question",
+                                 "answer": lambda o: o.the_answer(),
+                                 "predicate": lambda o: o.the_predicate()})
         self.assertEqual(quiz.length(), 10)
 
     def test_quiz_answering_and_grading(self):
@@ -52,16 +72,19 @@ class TestQuiz(unittest.TestCase):
 
         def question_generator():
             number_of_times_called[0] += 1
-            return tuple(["Question {}?".format(number_of_times_called[0]),
-                          ("yes" if number_of_times_called[0] % 2 == 0
-                              else "no")])
+            return {"data": self.TestObj(
+                    "yes" if number_of_times_called[0] % 2 == 0 else "no"),
+                    "question": "Question {}?".format(
+                        number_of_times_called[0]),
+                    "answer": lambda o: o.the_answer()}
 
         test_quiz = Quiz(10, question_generator)
 
         question_number = 1
         while not test_quiz.finished():
-            self.assertEqual("Question {}?".format(question_number),
-                             test_quiz.ask_question())
+            current_question = test_quiz.ask_question()
+            self.assertEqual(("Question {}?".format(question_number), None),
+                             current_question)
             result = test_quiz.answer_question("yes")
 
             # this is testing the return type of result

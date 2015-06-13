@@ -1,14 +1,22 @@
 class Question(object):
-    def __init__(self, to_ask, answer):
-        self.to_ask = to_ask
-        self.correct_answer = answer
+    def __init__(self, data, asks, answer, predicate=None):
+        self.data = data  # data object
+        self.asks = asks  # for the view to interperate
+        self.correct_answer = answer(data)
+        if predicate:
+            self.predicate = predicate(data)
+        else:
+            self.predicate = None
 
     @classmethod
-    def from_tuple(cls, question_answer):
-        return cls(question_answer[0], question_answer[1])
+    def from_dictionary(cls, qdict):
+        return cls(qdict["data"],
+                   qdict["question"],
+                   qdict["answer"],
+                   qdict.get("predicate", None))
 
     def ask(self):
-        return self.to_ask
+        return (self.asks, self.predicate)
 
     def answer(self, user_answer):
         return user_answer == self.correct_answer
@@ -22,7 +30,8 @@ class Quiz(object):
 
         self.questions = list()
         for _ in range(0, number_of_questions):
-            self.questions.append(Question.from_tuple(question_generator()))
+            self.questions.append(Question.from_dictionary(
+                                  question_generator()))
 
     def length(self):
         return self.number_of_questions
