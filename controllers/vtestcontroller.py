@@ -6,9 +6,16 @@ import lib.verbs as verbs
 
 class VerbTestController(object):
 
-    def __init__(self):
+    def __init__(self, view):
         # probably should make db configurable
         self.db = database.Database(database.DEFAULT_DATABASE_PATH)
+        self.view = view
+
+    def start(self):
+        self.view.request_quiz_config(self.on_have_quiz_config)
+
+    def on_have_quiz_config(config):
+        pass  # something with new_quiz
 
     def new_quiz(self, number_of_questions, config):
         pass

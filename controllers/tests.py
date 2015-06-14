@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import unittest
+import mock
 from controllers.vtestcontroller import VerbTestController
 import lib.verbs as verbs
 import lib.database as database
+from views.interface import QuizView
 
 
 #TODO - Make this test run with mock data
@@ -13,11 +15,21 @@ class TestVerbTestController(unittest.TestCase):
 
     def test_construction(self):
         ''' temporary test just to make sure that this all works'''
-        controller = VerbTestController()
+        controller = VerbTestController(QuizView())
         self.assertIsNotNone(controller)
 
+    def test_full_quiz_cycle(self):
+        view = QuizView()
+        controller = VerbTestController(view)
+
+        view.do_request_config = mock.MagicMock()
+        controller.start()
+        self.assertEqual(view.do_request_config.call_count, 1)
+
+        self.assertFalse(True, "Finish the test")
+
     def test_create_quiz(self):
-        controller = VerbTestController()
+        controller = VerbTestController(QuizView())
 
         Inf = verbs.Inflections
         controller.new_quiz(10,  # number of questions
