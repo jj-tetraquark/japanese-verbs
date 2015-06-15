@@ -20,7 +20,7 @@ class VerbTestController(object):
     def new_quiz(self, number_of_questions, inflections):
         for _ in range(0, number_of_questions):
             self.view.ask_question(self.get_question, lambda x: None)
-        self.view.on_finish_quiz()
+        self.view.on_finish_quiz({"correct_answers":number_of_questions})
 
     def get_question(self):
         verb = verbs.Verb(**self.db.get_verb())

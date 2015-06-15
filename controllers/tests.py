@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import unittest
+import random
 import mock  # TODO make this import conditional for Python 3 compatibility
 from controllers.vtestcontroller import VerbTestController
 import lib.verbs as verbs
@@ -27,7 +28,7 @@ class TestVerbTestController(unittest.TestCase):
 
         controller.start()
 
-        args, _ = view.request_quiz_config.call_args
+        args = tuple(view.request_quiz_config.call_args)[0]
         self.assertEqual(view.request_quiz_config.call_count, 1)
 
         self.assertTrue(callable(args[0]),
@@ -46,9 +47,18 @@ class TestVerbTestController(unittest.TestCase):
                                 }
                            }
 
-        # Patch view.ask_question to just call the callback with a blank answer
+        correct_answers = random.randrange(0, number_of_questions)
+
+        # Patch view.ask_question to just call the callback with either
+        # "correct" or "wrong" depending on how many times it's been
+        # asked and the number of correct answers
+        def mock_answer_question(q, callback):
+            times_called = view.ask_question.call_count
+            answer = "correct" if times_called <= correct_answers else "wrong"
+            callback(answer)
+
         view.ask_question = mock.MagicMock(
-            side_effect=lambda q, callback: callback(""))
+            side_effect=mock_answer_question)
 
         # Patch view.on_finish_quiz so we know it's called with the right data
         view.on_finish_quiz = mock.MagicMock()
@@ -56,7 +66,7 @@ class TestVerbTestController(unittest.TestCase):
         # Patching the controller metheod get_question so I can be sure of what
         # the answer is. Unsure if this is good practice...
         controller.get_question = lambda: quiz.Question(object, "Question",
-                                                        lambda x: "")
+                                                        lambda x: "correct")
 
         # Run the test
         controller.start()
@@ -64,10 +74,10 @@ class TestVerbTestController(unittest.TestCase):
         self.assertEqual(view.ask_question.call_count, number_of_questions,
                          "Did not ask {} questions".format(number_of_questions))
 
-        # All answers should be correct - TODO make correct answers randomised
         self.assertEqual(view.on_finish_quiz.call_count, 1)
-
-        self.assertFalse(True, "Finish the test")
+        on_finish_args = tuple(view.on_finish_quiz.call_args)[0]
+        self.assertEqual(on_finish_args[0].get("correct_answers", None),
+                         correct_answers, "Controller reported wrong score")
 
     def test_build_questions(self):
         controller = VerbTestController(QuizView())
