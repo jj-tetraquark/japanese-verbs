@@ -66,9 +66,9 @@ class TestVerbTestController(unittest.TestCase):
 
         # Patching the controller methed make_question so the question answer
         # is always "correct"
-        controller.make_question = lambda i: {"data": object(),
-                                              "question": "Question",
-                                              "answer": lambda x: "correct"}
+        controller.make_question = lambda: {"data": object(),
+                                            "asking_for": "Question",
+                                            "answer": lambda x: "correct"}
 
         # Run the test
         controller.start()
@@ -86,32 +86,33 @@ class TestVerbTestController(unittest.TestCase):
         self.assertEqual(on_finish_args[0].get("correct_answers", None),
                          correct_answers, "Controller reported wrong score")
 
-    @unittest.skip("Not testing this at the moment")
     def test_build_questions(self):
         controller = VerbTestController(QuizView())
 
         Inf = verbs.Inflections
-        controller.new_quiz(10,  # number of questions
-                            {
-                                Inf.PLAIN:
-                                [Inf.POLITE, Inf.NEGATIVE_POLITE]
-                            })
+        # Yes I know this is bad practice as I am testing implementation
+        # rather than interface. I'm sorry. If I think of a better way
+        # later I'll fix it.
+        controller.quiz_inflections = {
+            Inf.PLAIN:
+            [Inf.POLITE, Inf.NEGATIVE_POLITE]
+        }
 
-        question = controller.get_question()
+        question_dict = controller.make_question()
 
-        self.assertTrue(question.ask()[0] is Inf.POLITE or
-                        question.ask()[0] is Inf.NEGATIVE_POLITE)
+        data = question_dict.get("data")
+        self.assertTrue(isinstance(data, verbs.Verb), "Data should be a verb")
 
-        found_u = False
-        # bit of a stretch but all plain form verbs should end in u
-        for u in [u"う", u"つ", u"す", u"む", u"く", u"ぐ", u"ぬ", u"ぶ", u"る"]:
-            if u in question.ask()[1]:
-                found_u = True
-                break
+        asking_for = question_dict.get("asking_for")
+        self.assertTrue(asking_for in [Inf.POLITE, Inf.NEGATIVE_POLITE])
 
-        self.assertTrue(found_u, "No plain verb found in question")
+        answer = question_dict.get("answer")
+        self.assertTrue(callable(answer), "answer param should be callable")
+        self.assertEqual(answer(data), data.get_inflection(asking_for))
 
-        self.assertTrue(False, "Finish the goddamn test!")
+        predicate = question_dict.get("predicate")
+        self.assertTrue(callable(predicate), "predicate should be callable")
+        self.assertEqual(predicate(data), data.get_inflection(Inf.PLAIN))
 
 
     class MockQuizView(QuizView):

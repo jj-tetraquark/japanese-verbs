@@ -11,7 +11,7 @@ class Question(object):
     @classmethod
     def from_dictionary(cls, qdict):
         return cls(qdict["data"],
-                   qdict["question"],
+                   qdict["asking_for"],
                    qdict["answer"],
                    qdict.get("predicate", None))
 

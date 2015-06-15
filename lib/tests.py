@@ -60,7 +60,7 @@ class TestQuiz(unittest.TestCase):
 
         # Create a quiz with 10 questions
         quiz = Quiz(10, lambda: {"data": self.TestObj("Answer"),
-                                 "question": "The question",
+                                 "asking_for": "The question",
                                  "answer": lambda o: o.the_answer(),
                                  "predicate": lambda o: o.the_predicate()})
         self.assertEqual(quiz.length(), 10)
@@ -74,7 +74,7 @@ class TestQuiz(unittest.TestCase):
             number_of_times_called[0] += 1
             return {"data": self.TestObj(
                     "yes" if number_of_times_called[0] % 2 == 0 else "no"),
-                    "question": "Question {}?".format(
+                    "asking_for": "Question {}?".format(
                         number_of_times_called[0]),
                     "answer": lambda o: o.the_answer()}
 
