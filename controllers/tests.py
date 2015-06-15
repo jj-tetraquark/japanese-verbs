@@ -90,12 +90,18 @@ class TestVerbTestController(unittest.TestCase):
         controller = VerbTestController(QuizView())
 
         Inf = verbs.Inflections
+        # TODO - change this to Inf.All() when all are implemented
+        implemented_inflections = [Inf.PLAIN, Inf.NEGATIVE_PLAIN, Inf.POLITE,
+                                   Inf.POLITE, Inf.NEGATIVE_PAST_POLITE,
+                                   Inf.NEGATIVE_POLITE, Inf.PAST_POLITE]
+
+        test_predicate = random.choice(implemented_inflections)
         # Yes I know this is bad practice as I am testing implementation
         # rather than interface. I'm sorry. If I think of a better way
         # later I'll fix it.
         controller.quiz_inflections = {
-            Inf.PLAIN:
-            [Inf.POLITE, Inf.NEGATIVE_POLITE]
+            test_predicate:
+            implemented_inflections
         }
 
         question_dict = controller.make_question()
@@ -104,7 +110,7 @@ class TestVerbTestController(unittest.TestCase):
         self.assertTrue(isinstance(data, verbs.Verb), "Data should be a verb")
 
         asking_for = question_dict.get("asking_for")
-        self.assertTrue(asking_for in [Inf.POLITE, Inf.NEGATIVE_POLITE])
+        self.assertTrue(asking_for in implemented_inflections)
 
         answer = question_dict.get("answer")
         self.assertTrue(callable(answer), "answer param should be callable")
@@ -112,7 +118,7 @@ class TestVerbTestController(unittest.TestCase):
 
         predicate = question_dict.get("predicate")
         self.assertTrue(callable(predicate), "predicate should be callable")
-        self.assertEqual(predicate(data), data.get_inflection(Inf.PLAIN))
+        self.assertEqual(predicate(data), data.get_inflection(test_predicate))
 
 
     class MockQuizView(QuizView):

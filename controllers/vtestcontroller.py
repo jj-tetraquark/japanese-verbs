@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import random
 import lib.database as database
 import lib.quiz as quiz
 import lib.verbs as verbs
@@ -37,8 +38,15 @@ class VerbTestController(object):
         self.view.handle_answer_result(result, self.maybe_ask_question)
 
     def make_question(self):
+        predicate = self.quiz_inflections.keys()[0]
+        # List comprehension to stop asking for itself
+        possible_asks = [x for x in self.quiz_inflections[predicate]
+                         if x != predicate]
+
+        asking_for = random.choice(possible_asks)
+
         return {"data": verbs.Verb(**self.db.get_verb()),
-                "asking_for": verbs.Inflections.POLITE,
-                "answer": lambda o: o.masu(),
-                "predicate": lambda o: o.plain()
+                "asking_for": asking_for,
+                "answer": lambda o: o.get_inflection(asking_for),
+                "predicate": lambda o: o.get_inflection(predicate)
                 }
