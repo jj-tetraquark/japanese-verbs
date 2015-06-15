@@ -14,11 +14,13 @@ class VerbTestController(object):
     def start(self):
         self.view.request_quiz_config(self.on_have_quiz_config)
 
-    def on_have_quiz_config(config):
-        pass  # something with new_quiz
+    def on_have_quiz_config(self, config):
+        self.new_quiz(config["number_of_questions"], config["inflections"])
 
-    def new_quiz(self, number_of_questions, config):
-        pass
+    def new_quiz(self, number_of_questions, inflections):
+        for _ in range(0, number_of_questions):
+            self.view.ask_question(self.get_question, lambda x: None)
+        self.view.on_finish_quiz()
 
     def get_question(self):
         verb = verbs.Verb(**self.db.get_verb())

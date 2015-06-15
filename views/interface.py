@@ -35,7 +35,7 @@ class QuizView(object):
         ''' Requests the view to ask the user a question  and stores the
             callback'''
         self.answer_question_callback = callback
-        self.do_ask_question(self, question)
+        self.do_ask_question(question)
 
     def do_ask_question(self, question):
         ''' Actually does the UI for asking the user a question '''
@@ -48,3 +48,7 @@ class QuizView(object):
             self.answer_question_callback = None
         else:
             raise RuntimeError("Answer question callback invalid")
+
+    def on_finish_quiz(self, data):
+        ''' Display the score and give option to restart or something '''
+        raise NotImplementedError("on_finish_quiz not implemented")
