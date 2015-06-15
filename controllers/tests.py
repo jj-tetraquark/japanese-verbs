@@ -40,11 +40,8 @@ class TestVerbTestController(unittest.TestCase):
         controller = VerbTestController(view)
 
         number_of_questions = 10
-        Inf = verbs.Inflections
         view.mock_config = {"number_of_questions": number_of_questions,
-                            "inflections": {
-                                Inf.PLAIN: [Inf.POLITE, Inf.NEGATIVE_POLITE]
-                                }
+                            "inflections": dict()
                            }
 
         correct_answers = random.randrange(0, number_of_questions)
@@ -76,9 +73,11 @@ class TestVerbTestController(unittest.TestCase):
         # Run the test
         controller.start()
 
+        # Check controller asked the right number of questions
         self.assertEqual(view.ask_question.call_count, number_of_questions,
                          "Did not ask {} questions".format(number_of_questions))
 
+        # Check controller sent the right number of results
         self.assertEqual(view.handle_answer_result.call_count,
                          number_of_questions)
 
