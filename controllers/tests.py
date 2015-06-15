@@ -2,10 +2,9 @@
 import unittest
 import random
 import mock  # TODO make this import conditional for Python 3 compatibility
-from controllers.vtestcontroller import VerbTestController
+from controllers.verbquiz import VerbQuizController
 import lib.verbs as verbs
 import lib.database as database
-import lib.quiz as quiz
 from views.interface import QuizView
 
 
@@ -17,12 +16,12 @@ class TestVerbTestController(unittest.TestCase):
 
     def test_construction(self):
         ''' temporary test just to make sure that this all works'''
-        controller = VerbTestController(QuizView())
+        controller = VerbQuizController(QuizView())
         self.assertIsNotNone(controller)
 
     def test_start(self):
         view = QuizView()
-        controller = VerbTestController(view)
+        controller = VerbQuizController(view)
 
         view.request_quiz_config = mock.MagicMock()
 
@@ -37,12 +36,12 @@ class TestVerbTestController(unittest.TestCase):
     def test_full_quiz_cycle(self):
         ''' Arguably more a functional/integration test '''
         view = self.MockQuizView()
-        controller = VerbTestController(view)
+        controller = VerbQuizController(view)
 
         number_of_questions = 10
         view.mock_config = {"number_of_questions": number_of_questions,
                             "inflections": dict()
-                           }
+                            }
 
         correct_answers = random.randrange(0, number_of_questions)
 
@@ -87,7 +86,7 @@ class TestVerbTestController(unittest.TestCase):
                          correct_answers, "Controller reported wrong score")
 
     def test_build_questions(self):
-        controller = VerbTestController(QuizView())
+        controller = VerbQuizController(QuizView())
 
         Inf = verbs.Inflections
         # TODO - change this to Inf.All() when all are implemented
@@ -121,7 +120,7 @@ class TestVerbTestController(unittest.TestCase):
         self.assertEqual(predicate(data), data.get_inflection(test_predicate))
 
     def test_build_question_variety(self):
-        controller = VerbTestController(QuizView())
+        controller = VerbQuizController(QuizView())
 
         Inf = verbs.Inflections
         implemented_inflections = [Inf.PLAIN, Inf.NEGATIVE_PLAIN, Inf.POLITE,

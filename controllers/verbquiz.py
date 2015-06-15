@@ -5,7 +5,7 @@ import lib.quiz as quiz
 import lib.verbs as verbs
 
 
-class VerbTestController(object):
+class VerbQuizController(object):
 
     def __init__(self, view):
         # probably should make db configurable
