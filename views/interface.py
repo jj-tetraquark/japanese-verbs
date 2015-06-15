@@ -7,6 +7,7 @@ class QuizView(object):
     def __init__(self):
         self.set_config_callback = None
         self.answer_question_callback = None
+        self.next_question_callback = None
 
     def init_splash(self):
         ''' Initial view setup. Normally called by __init__ but can be called
@@ -48,6 +49,25 @@ class QuizView(object):
             self.answer_question_callback = None
         else:
             raise RuntimeError("Answer question callback invalid")
+
+    def handle_answer_result(self, result, next_question_callback):
+        ''' Update UI to show if the user got the question right'''
+        # Only allow the view to ask for the next question once it has handled
+        # the result of the last one
+        self.next_question_callback = next_question_callback
+        self.do_handle_answer_result(result)
+
+    def do_handle_answer_result(self, result):
+        ''' Actually does the UI change for showing answer result '''
+        raise NotImplementedError("do_handle_answer not implemented")
+
+    def request_next_question(self):
+        ''' Use the callback to ask for the next question '''
+        if callable(self.next_question_callback):
+            self.next_question_callback()
+            self.next_question_callback = None
+        else:
+            raise RuntimeError("Request next question callback invalid")
 
     def on_finish_quiz(self, data):
         ''' Display the score and give option to restart or something '''

@@ -32,11 +32,8 @@ class VerbTestController(object):
                                       self.quiz.answered_correctly()})
 
     def handle_answer(self, answer):
-        self.quiz.answer_question(answer)
-        # TODO - This should request the view to handle the answer result
-        self.maybe_ask_question()
-
-
+        result = self.quiz.answer_question(answer)
+        self.view.handle_answer_result(result, self.maybe_ask_question)
 
     def make_question(self, inflections):
         raise NotImplementedError("make_question not implemented yet")

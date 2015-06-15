@@ -60,6 +60,10 @@ class TestVerbTestController(unittest.TestCase):
         view.ask_question = mock.MagicMock(
             side_effect=mock_answer_question)
 
+        # Patch view.handle_answer_result
+        view.handle_answer_result = mock.MagicMock(
+            side_effect=lambda ans, callback: callback())
+
         # Patch view.on_finish_quiz so we know it's called with the right data
         view.on_finish_quiz = mock.MagicMock()
 
@@ -74,6 +78,9 @@ class TestVerbTestController(unittest.TestCase):
 
         self.assertEqual(view.ask_question.call_count, number_of_questions,
                          "Did not ask {} questions".format(number_of_questions))
+
+        self.assertEqual(view.handle_answer_result.call_count,
+                         number_of_questions)
 
         self.assertEqual(view.on_finish_quiz.call_count, 1)
         on_finish_args = tuple(view.on_finish_quiz.call_args)[0]
