@@ -120,6 +120,28 @@ class TestVerbTestController(unittest.TestCase):
         self.assertTrue(callable(predicate), "predicate should be callable")
         self.assertEqual(predicate(data), data.get_inflection(test_predicate))
 
+    def test_build_question_variety(self):
+        controller = VerbTestController(QuizView())
+
+        Inf = verbs.Inflections
+        implemented_inflections = [Inf.PLAIN, Inf.NEGATIVE_PLAIN, Inf.POLITE,
+                                   Inf.POLITE, Inf.NEGATIVE_PAST_POLITE,
+                                   Inf.NEGATIVE_POLITE, Inf.PAST_POLITE]
+
+        controller.quiz_inflections = {
+            inflection: implemented_inflections
+            for inflection in implemented_inflections}
+
+        questions = [controller.make_question() for _ in range(0, 20)]
+        unique_verbs = set([x["data"] for x in questions])
+        unique_asks = set([x["asking_for"] for x in questions])
+
+        test_verb = list(unique_verbs)[0]
+        unique_predicates = set([x["predicate"](test_verb) for x in questions])
+
+        self.assertTrue(len(unique_verbs) > 1)
+        self.assertTrue(len(unique_asks) > 1)
+        self.assertTrue(len(unique_predicates) > 1)
 
     class MockQuizView(QuizView):
         def __init__(self):

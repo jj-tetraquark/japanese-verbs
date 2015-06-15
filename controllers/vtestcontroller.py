@@ -38,7 +38,7 @@ class VerbTestController(object):
         self.view.handle_answer_result(result, self.maybe_ask_question)
 
     def make_question(self):
-        predicate = self.quiz_inflections.keys()[0]
+        predicate = random.choice(self.quiz_inflections.keys())
         # List comprehension to stop asking for itself
         possible_asks = [x for x in self.quiz_inflections[predicate]
                          if x != predicate]
