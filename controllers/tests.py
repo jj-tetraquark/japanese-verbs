@@ -21,7 +21,7 @@ class TestVerbTestController(unittest.TestCase):
         self.assertIsNotNone(controller)
 
     def test_start(self):
-        view = self.MockQuizView()
+        view = QuizView()
         controller = VerbTestController(view)
 
         view.request_quiz_config = mock.MagicMock()
