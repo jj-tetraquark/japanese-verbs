@@ -18,11 +18,11 @@ class QuizView(object):
         ''' Requests the quiz config from the user. Takes callback for when
             done '''
         self.set_config_callback = callback
-        self.do_request_config()
+        self.ask_user_for_config()
 
-    def do_request_config(self):
+    def ask_user_for_config(self):
         ''' Actually does the UI for requesting the config '''
-        raise NotImplementedError("do_request_config not implemented")
+        raise NotImplementedError("ask_user_for_config not implemented")
 
     def set_quiz_config(self, config):
         ''' Sets the quiz config through the callback '''

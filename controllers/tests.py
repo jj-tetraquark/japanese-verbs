@@ -147,7 +147,7 @@ class TestVerbTestController(unittest.TestCase):
             super(TestVerbTestController.MockQuizView, self).__init__()
             self.mock_config = None
 
-        def do_request_config(self):
+        def ask_user_for_config(self):
             self.set_quiz_config(self.mock_config)
 
 

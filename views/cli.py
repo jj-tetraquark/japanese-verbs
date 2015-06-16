@@ -26,3 +26,6 @@ class CLIView(views.interface.QuizView):
 
                                にほんのどうし
         ''')
+
+    def ask_user_for_config(self):
+        print(u"動詞質問はどれですか")
