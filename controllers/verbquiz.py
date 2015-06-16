@@ -59,6 +59,7 @@ def make_bidirectional_verb_config(inflection_list):
     return {inf: filter(lambda x: x != inf, inflection_list)
             for inf in inflection_list}
 
+
 def make_monodirectional_verb_config(from_list, to_list):
     return {inf: to_list for inf in from_list}
 
@@ -76,8 +77,8 @@ class StandardConfig(object):
         return {getattr(cls, c): c.replace("_", " ").title() for c in dir(cls)
                 if not c.startswith("_")
                 and not callable(getattr(cls, c))
-                and not isinstance(getattr(c, dict))
-                and not isinstance(getattr(c, list))}
+                and not isinstance(getattr(cls, c), dict)
+                and not isinstance(getattr(cls, c), list)}
 
     I = verbs.Inflections
     ALL_PLAIN_LIST = [I.PLAIN, I.NEGATIVE_PLAIN,

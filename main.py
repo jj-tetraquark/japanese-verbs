@@ -2,11 +2,18 @@
 
 import os
 import lib.database as database
+from controllers.verbquiz import VerbQuizController
+from views.cli import CLIView
 
 
 def main():
     if is_first_run():
         do_installation()
+    view = CLIView()
+    controller = VerbQuizController(view)
+
+    view.init_splash()
+    controller.start()
 
 
 def is_first_run():
