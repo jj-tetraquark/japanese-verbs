@@ -27,9 +27,14 @@ class Inflections(object):
     PASSIVE_CAUSATIVE = 12
 
     @classmethod
-    def All(cls):
+    def AllAttr(cls):
         return [i for i in dir(cls) if not callable(i)
-                and not (i.startswith("__") or i is "All")]
+                and not (i.startswith("__") or i.startswith("All"))]
+
+    @classmethod
+    def All_readable_dict(cls):
+        return {getattr(cls, i): i.replace('_', ' ').title()
+                for i in cls.AllAttr()}
 
 class JLPTLevel:
     N1 = 1
@@ -143,7 +148,7 @@ class Verb(object):
                 return plain_form[:-1] + u"いで"
             elif self.ending == "su":
                 return plain_form[:-1] + u"して"
-        #todo suru and kuru
+        #TODO suru and kuru
 
     def __get_plain_negative_stem(self, stem):
         neg_stem = stem[:-1]
