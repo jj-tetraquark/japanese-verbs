@@ -54,19 +54,50 @@ class VerbQuizController(object):
                 }
 
 
+# Possibly put this in a general helper folder?
+def make_bidirectional_verb_config(inflection_list):
+    return {inf: filter(lambda x: x != inf, inflection_list)
+            for inf in inflection_list}
+
+def make_monodirectional_verb_config(from_list, to_list):
+    return {inf: to_list for inf in from_list}
+
+
 class StandardConfig(object):
     ALL_PLAIN = 1
     ALL_POLITE = 2
     PLAIN_AND_POLITE = 3
     PLAIN_TO_TE_FORM = 4
     POLITE_TO_TE_FORM = 5
-    PLAIN_POLITE_TE = 6
     CUSTOM = "C"
 
     @classmethod
     def All_readable_dict(cls):
         return {getattr(cls, c): c.replace("_", " ").title() for c in dir(cls)
-                if not c.startswith("_") and not c.startswith("All")}
+                if not c.startswith("_")
+                and not callable(getattr(cls, c))
+                and not isinstance(getattr(c, dict))
+                and not isinstance(getattr(c, list))}
 
+    I = verbs.Inflections
+    ALL_PLAIN_LIST = [I.PLAIN, I.NEGATIVE_PLAIN,
+                      I.PAST_PLAIN, I.NEGATIVE_PAST_PLAIN]
+    ALL_POLITE_LIST = [I.POLITE, I.NEGATIVE_POLITE,
+                       I.PAST_POLITE, I.NEGATIVE_PAST_POLITE]
+    PLAIN_AND_POLITE_LIST = ALL_PLAIN_LIST + ALL_POLITE_LIST
+    TE_FORM_LIST = [I.TE_FORM]
 
+    STANDARD_CONFIG_DICT = {
+        ALL_PLAIN: make_bidirectional_verb_config(ALL_PLAIN_LIST),
+        ALL_POLITE: make_bidirectional_verb_config(ALL_POLITE_LIST),
+        PLAIN_AND_POLITE:
+        make_bidirectional_verb_config(PLAIN_AND_POLITE_LIST),
+        PLAIN_TO_TE_FORM:
+        make_monodirectional_verb_config(ALL_PLAIN_LIST, TE_FORM_LIST),
+        POLITE_TO_TE_FORM:
+        make_monodirectional_verb_config(ALL_POLITE_LIST, TE_FORM_LIST)
+    }
 
+    @classmethod
+    def get_config(cls, config_name):
+        return cls.STANDARD_CONFIG_DICT.get(config_name, None)
