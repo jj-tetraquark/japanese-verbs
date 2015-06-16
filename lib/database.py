@@ -145,8 +145,8 @@ class Database(object):
 
         if verb_type:
             where_statement += "WHERE type='{0}' ".format(verb_type)
-        if jlpt:
-            where_statement += "WHERE jlpt='{0}' ".format(jlpt)
+        if jlpt is not None:
+            where_statement += "WHERE jlpt={0} ".format(jlpt)
 
         command = ("SELECT * FROM verbs {0}"
                    "ORDER BY RANDOM() LIMIT 1".format(where_statement))
