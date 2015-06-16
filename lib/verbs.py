@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Verb types as string constants
 
-
 class Types(object):
     ICHIDAN = "ichidan"
     GODAN = "godan"
@@ -32,6 +31,21 @@ class Inflections(object):
         return [i for i in dir(cls) if not callable(i)
                 and not (i.startswith("__") or i is "All")]
 
+class JLPTLevel:
+    N1 = 1
+    N2 = 2
+    N3 = 3
+    N4 = 4
+    N5 = 5
+    NON_JLPT = 0
+
+    @classmethod
+    def AllJLPT(cls):
+        return [cls.N1, cls.N2, cls.N3, cls.N4, cls.N5]
+
+    @classmethod
+    def All(cls):
+        return cls.AllJLPT() + [cls.NON_JLPT]
 
 class Verb(object):
     ''' Wrapper to handle most verb stuff '''
@@ -45,6 +59,7 @@ class Verb(object):
         self.type = kwargs.get("type")
         self.ending = kwargs.get("ending")
         self.english = kwargs.get("english")
+        self.jlpt = kwargs.get("jlpt")
 
         if not self.kana:
             raise TypeError("kana cannot be empty")

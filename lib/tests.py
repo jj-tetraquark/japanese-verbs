@@ -26,6 +26,10 @@ class TestDatabaseConnections(unittest.TestCase):
             verb = self.db.get_verb(type=v_type)
             self.assertEqual(verb["type"], v_type)
 
+    def test_get_all_jlpt_levels(self):
+        for jlpt in verbs.JLPTLevel.All():
+            verb = self.db.get_verb(jlpt=jlpt)
+            self.assertEqual(verb["jlpt"], jlpt)
 
 class TestQuiz(unittest.TestCase):
     class TestObj(object):

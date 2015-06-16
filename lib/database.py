@@ -140,10 +140,13 @@ class Database(object):
 
     def get_verb(self, **kwargs):
         verb_type = kwargs.get('type', None)
+        jlpt = kwargs.get('jlpt', None)
         where_statement = ""
 
         if verb_type:
             where_statement += "WHERE type='{0}' ".format(verb_type)
+        if jlpt:
+            where_statement += "WHERE jlpt='{0}' ".format(jlpt)
 
         command = ("SELECT * FROM verbs {0}"
                    "ORDER BY RANDOM() LIMIT 1".format(where_statement))
