@@ -1,3 +1,3 @@
 #!/bin/sh
-python -m lib.tests
-python -m controllers.tests
+python3 -m lib.tests
+python3 -m controllers.tests

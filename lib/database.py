@@ -6,7 +6,7 @@ import os
 import gzip
 import sqlite3
 import re
-import verbs
+import lib.verbs
 
 import xml.etree.ElementTree as ET
 
@@ -135,8 +135,9 @@ class Database(object):
         self.cur = self.db.cursor()
 
     def is_initialized(self):
-        entry_count = self.cur.execute(''' SELECT COUNT(*) FROM verbs ''')
-        return entry_count > 0
+        entry_count = self.cur.execute(
+            ''' SELECT COUNT(*) FROM verbs ''').fetchone()
+        return entry_count[0] > 0
 
     def get_verb(self, **kwargs):
         verb_type = kwargs.get('type', None)

@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 import unittest
 import random
-import mock  # TODO make this import conditional for Python 3 compatibility
+import sys
+if sys.version_info < (3, 0):
+    import mock
+else:
+    import unittest.mock as mock
 from controllers.verbquiz import VerbQuizController
 import lib.verbs as verbs
 import lib.database as database

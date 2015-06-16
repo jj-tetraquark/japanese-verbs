@@ -39,15 +39,34 @@ class VerbQuizController(object):
         self.view.handle_answer_result(result, self.maybe_ask_question)
 
     def make_question(self):
-        predicate = random.choice(self.quiz_inflections.keys())
+        predicate = random.choice(list(self.quiz_inflections.keys()))
         # List comprehension to stop asking for itself
         possible_asks = [x for x in self.quiz_inflections[predicate]
                          if x != predicate]
 
         asking_for = random.choice(possible_asks)
 
-        return {"data": verbs.Verb(**self.db.get_verb(jlpt=self.quiz_jlpt_level)),
+        return {"data": verbs.Verb(**self.db.get_verb(
+                                   jlpt=self.quiz_jlpt_level)),
                 "asking_for": asking_for,
                 "answer": lambda o: o.get_inflection(asking_for),
                 "predicate": lambda o: o.get_inflection(predicate)
                 }
+
+
+class StandardConfig(object):
+    ALL_PLAIN = 1
+    ALL_POLITE = 2
+    PLAIN_AND_POLITE = 3
+    PLAIN_TO_TE_FORM = 4
+    POLITE_TO_TE_FORM = 5
+    PLAIN_POLITE_TE = 6
+    CUSTOM = "C"
+
+    @classmethod
+    def All_readable_dict(cls):
+        return {getattr(cls, c): c.replace("_", " ").title() for c in dir(cls)
+                if not c.startswith("_") and not c.startswith("All")}
+
+
+
