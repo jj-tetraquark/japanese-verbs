@@ -95,6 +95,7 @@ class TestVerbTestController(unittest.TestCase):
                                    Inf.NEGATIVE_POLITE, Inf.PAST_POLITE]
 
         test_predicate = random.choice(implemented_inflections)
+        test_jlpt_level = random.choice(verbs.JLPTLevel.AllJLPT())
         # Yes I know this is bad practice as I am testing implementation
         # rather than interface. I'm sorry. If I think of a better way
         # later I'll fix it.
@@ -102,11 +103,13 @@ class TestVerbTestController(unittest.TestCase):
             test_predicate:
             implemented_inflections
         }
+        controller.quiz_jlpt_level = test_jlpt_level
 
         question_dict = controller.make_question()
 
         data = question_dict.get("data")
         self.assertTrue(isinstance(data, verbs.Verb), "Data should be a verb")
+        self.assertEqual(data.jlpt, test_jlpt_level)
 
         asking_for = question_dict.get("asking_for")
         self.assertTrue(asking_for in implemented_inflections)

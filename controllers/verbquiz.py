@@ -13,6 +13,7 @@ class VerbQuizController(object):
         self.view = view
         self.quiz = None
         self.quiz_inflections = dict()
+        self.quiz_jlpt_level = None
 
     def start(self):
         self.view.request_quiz_config(self.on_have_quiz_config)
@@ -45,7 +46,7 @@ class VerbQuizController(object):
 
         asking_for = random.choice(possible_asks)
 
-        return {"data": verbs.Verb(**self.db.get_verb()),
+        return {"data": verbs.Verb(**self.db.get_verb(jlpt=self.quiz_jlpt_level)),
                 "asking_for": asking_for,
                 "answer": lambda o: o.get_inflection(asking_for),
                 "predicate": lambda o: o.get_inflection(predicate)
