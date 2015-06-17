@@ -174,7 +174,8 @@ class Verb(object):
                               "gu": u"が",
                               "nu": u"な",
                               "bu": u"ば",
-                              "ru": u"ら"}
+                              "ru": u"ら",
+                              "iku": u"か"}
                 neg_stem += u_to_a_map[self.ending]
         elif self.type == Types.SURU:
             neg_stem = u"し"
@@ -197,7 +198,8 @@ class Verb(object):
                           "gu": u"ぎ",
                           "nu": u"に",
                           "bu": u"び",
-                          "ru": u"り"}
+                          "ru": u"り",
+                          "iku": u"き"}
             masu_stem = stem[:-1] + u_to_i_map[self.ending] + u"ま"
         elif self.type == Types.SURU:
             masu_stem = stem[:-2] + u"しま"
