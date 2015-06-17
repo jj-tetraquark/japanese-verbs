@@ -52,6 +52,16 @@ class JLPTLevel:
     def All(cls):
         return cls.AllJLPT() + [cls.NON_JLPT]
 
+    @classmethod
+    def All_attr(cls):
+        return [i for i in dir(cls) if not callable(getattr(cls, i))
+                and not i.startswith("__")]
+
+    @classmethod
+    def All_readable_dict(cls):
+        return {getattr(cls, i): i.replace('_', ' ').title()
+                for i in cls.All_attr()}
+
 class Verb(object):
     ''' Wrapper to handle most verb stuff '''
 

@@ -19,10 +19,11 @@ class VerbQuizController(object):
         self.view.request_quiz_config(self.on_have_quiz_config)
 
     def on_have_quiz_config(self, config):
-        self.new_quiz(config["number_of_questions"], config["inflections"])
+        self.quiz_inflections = config["inflections"]
+        self.quiz_jlpt_level = config.get("jlpt", 0)
+        self.new_quiz(config["number_of_questions"])
 
-    def new_quiz(self, number_of_questions, inflections):
-        self.quiz_inflections = inflections
+    def new_quiz(self, number_of_questions):
         self.quiz = quiz.Quiz(number_of_questions, self.make_question)
         self.maybe_ask_question()
 
