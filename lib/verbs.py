@@ -83,7 +83,7 @@ class Verb(object):
         if not self.ending:
             raise TypeError("ending cannot be empty")
 
-    def get_inflection(self, infl, kanji=True):
+    def get_inflection(self, infl, kanji=True, kana=False):
         I = Inflections
 
         not_implemented = lambda k: NotImplementedError("Not yet")
@@ -113,7 +113,11 @@ class Verb(object):
             I.PASSIVE_CAUSATIVE:
             not_implemented
         }
-        return inflection_method_lookup[infl](kanji)
+        if not kana:
+            return inflection_method_lookup[infl](kanji)
+        elif kanji:
+            return (inflection_method_lookup[infl](True),
+                    inflection_method_lookup[infl](False))
 
     def plain(self, **kwargs):
         use_kanji = kwargs.get("kanji", True)

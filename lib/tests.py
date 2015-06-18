@@ -243,6 +243,10 @@ class TestVerbPlainForm(TestVerbClass):
         self.assertEqual(u"会わない", self.au.get_inflection(
                          verbs.Inflections.NEGATIVE_PLAIN))
 
+        self.assertEqual(self.au.get_inflection(verbs.Inflections.PLAIN,
+                                                kanji=True, kana=True),
+                         (u"会う",u"あう"))
+
 
 class TestVerbMasuForm(TestVerbClass):
 
