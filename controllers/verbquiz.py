@@ -52,7 +52,8 @@ class VerbQuizController(object):
                 "asking_for": asking_for,
                 "answer": lambda o: o.get_inflection(asking_for,
                                                      kanji=True, kana=True),
-                "predicate": lambda o: o.get_inflection(predicate)
+                "predicate": lambda o: o.get_inflection(predicate,
+                                                        kanji=True, kana=True)
                 }
 
 

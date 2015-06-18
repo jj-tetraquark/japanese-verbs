@@ -125,7 +125,8 @@ class TestVerbTestController(unittest.TestCase):
 
         predicate = question_dict.get("predicate")
         self.assertTrue(callable(predicate), "predicate should be callable")
-        self.assertEqual(predicate(data), data.get_inflection(test_predicate))
+        self.assertEqual(predicate(data), data.get_inflection(
+            test_predicate, kanji=True, kana=True))
 
     def test_build_question_variety(self):
         controller = VerbQuizController(QuizView())
