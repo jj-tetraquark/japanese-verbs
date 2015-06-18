@@ -50,7 +50,8 @@ class VerbQuizController(object):
         return {"data": verbs.Verb(**self.db.get_verb(
                                    jlpt=self.quiz_jlpt_level)),
                 "asking_for": asking_for,
-                "answer": lambda o: o.get_inflection(asking_for),
+                "answer": lambda o: o.get_inflection(asking_for,
+                                                     kanji=True, kana=True),
                 "predicate": lambda o: o.get_inflection(predicate)
                 }
 

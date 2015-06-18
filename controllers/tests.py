@@ -120,7 +120,8 @@ class TestVerbTestController(unittest.TestCase):
 
         answer = question_dict.get("answer")
         self.assertTrue(callable(answer), "answer param should be callable")
-        self.assertEqual(answer(data), data.get_inflection(asking_for))
+        self.assertEqual(answer(data), data.get_inflection(
+            asking_for, kanji=True, kana=True))
 
         predicate = question_dict.get("predicate")
         self.assertTrue(callable(predicate), "predicate should be callable")
