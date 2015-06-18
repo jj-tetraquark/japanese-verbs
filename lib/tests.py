@@ -58,6 +58,19 @@ class TestQuiz(unittest.TestCase):
         self.assertFalse(question.answer("not the answer"))
         self.assertTrue(question.answer(the_answer))
 
+    def test_multiple_answers(self):
+
+        answer1 = "First answer"
+        answer2 = "Second answer"
+
+        testObj = self.TestObj(answer1, "")
+
+        question = Question(testObj, "",
+                            lambda o: (answer1, answer2))
+
+        self.assertTrue(question.answer(answer1))
+        self.assertTrue(question.answer(answer2))
+
     def test_quiz_construction(self):
         ''' should be constructed with a number of questions and a function
             that returns a dictionary '''

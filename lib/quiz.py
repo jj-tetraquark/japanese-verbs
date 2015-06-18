@@ -19,7 +19,10 @@ class Question(object):
         return (self.asks, self.predicate)
 
     def answer(self, user_answer):
-        return user_answer == self.correct_answer
+        if isinstance(self.correct_answer, tuple):
+            return user_answer in self.correct_answer
+        else:
+            return user_answer == self.correct_answer
 
 
 class Quiz(object):
