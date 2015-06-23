@@ -179,6 +179,10 @@ class TestVerbClass(unittest.TestCase):
                         type=verbs.Types.GODAN, ending="iku",
                         english="to go, to move")
 
+        self.nasaru = Verb(kana=u"なさる", kanji=u"為さる",
+                           type=verbs.Types.GODAN, ending="aru",
+                           english="to do (honorable)")
+
 
 class TestVerbPlainForm(TestVerbClass):
 
@@ -282,6 +286,9 @@ class TestVerbMasuForm(TestVerbClass):
 
     def test_get_godan_masu_iku_ending(self):
         self.assertEqual(u"行きます", self.iku.masu())
+
+    def test_get_godan_masu_aru_ending(self):
+        self.assertEqual(u"為さいます", self.nasaru.masu())
 
     def test_get_suru_masu(self):
         self.assertEqual(u"します", self.suru.masu())
