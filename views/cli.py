@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import textwrap
+import os
+import time
 import sys
 import views.interface
 import lib.verbs as verbs
@@ -16,8 +18,10 @@ class CLIView(views.interface.QuizView):
 
     def __init__(self):
         super(CLIView, self).__init__()
+        self.inflections = verbs.Inflections.All_readable_dict()
 
     def init_splash(self):
+        self.clear_terminal()
         #日本語の動詞
         print('''
                  ├───────┐  ____│____  ___\__ ¯¯/¯¯¯¯      #####
@@ -38,7 +42,7 @@ class CLIView(views.interface.QuizView):
         ''')
 
     def ask_user_for_config(self):
-        print(u"動詞質問はどれですか\n####################")
+        print(u"動詞質問はどれですか\n====================")
 
         inflection_config = self.ask_for_selection_from_dictonary(
             StandardConfig.All_readable_dict())
@@ -58,11 +62,22 @@ class CLIView(views.interface.QuizView):
              "inflections": StandardConfig.get_config(inflection_config),
              "jlpt": jlpt})
 
-
     def ask_for_custom_config(self):
         print(u"から:")
         print(self.format_option_table(
-              verbs.Inflections.All_readable_dict()))
+            verbs.Inflections.All_readable_dict()))
+
+    def display_start_quiz(self):
+        print(u"\n=================\nよし！がんばって！\n=================\n")
+        time.sleep(1)
+        self.clear_terminal()
+
+    def do_ask_question(self, question):
+        print(u" しつもん ".center(40, "="))
+        print(u"\n{0} [{1}]".format(question.predicate[0],
+                                    question.predicate[1]))
+        answer = input(u"{0} : ".format(self.inflections[question.asks]))
+        self.submit_answer(answer)
 
     def ask_for_number(self, question):
         while True:
@@ -93,3 +108,6 @@ class CLIView(views.interface.QuizView):
             inflection = "{0}: {1}".format(k, v)
             spaced_inflections += inflection.ljust(26)
         return textwrap.fill(spaced_inflections, 78)
+
+    def clear_terminal(self):
+        os.system('cls' if os.name == 'nt' else 'clear')
