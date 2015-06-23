@@ -32,6 +32,11 @@ class QuizView(object):
         else:
             raise RuntimeError("Set config callback invalid")
 
+    def display_start_quiz(self):
+        ''' Displays the splash screen for starting the quiz. Called before
+            first question is asked '''
+        raise NotImplementedError("display_start_quiz not implemented")
+
     def ask_question(self, question, callback):
         ''' Requests the view to ask the user a question  and stores the
             callback'''

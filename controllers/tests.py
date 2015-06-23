@@ -60,6 +60,9 @@ class TestVerbTestController(unittest.TestCase):
         view.ask_question = mock.MagicMock(
             side_effect=mock_answer_question)
 
+        # Patch begin-test splash
+        view.display_start_quiz = mock.MagicMock()
+
         # Patch view.handle_answer_result
         view.handle_answer_result = mock.MagicMock(
             side_effect=lambda ans, callback: callback())
@@ -75,6 +78,9 @@ class TestVerbTestController(unittest.TestCase):
 
         # Run the test
         controller.start()
+
+        # Check controller displays the start screen
+        self.assertEqual(view.display_start_quiz.call_count, 1)
 
         # Check controller asked the right number of questions
         self.assertEqual(view.ask_question.call_count, number_of_questions,

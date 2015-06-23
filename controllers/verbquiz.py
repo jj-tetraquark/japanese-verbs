@@ -25,6 +25,7 @@ class VerbQuizController(object):
 
     def new_quiz(self, number_of_questions):
         self.quiz = quiz.Quiz(number_of_questions, self.make_question)
+        self.view.display_start_quiz()
         self.maybe_ask_question()
 
     def maybe_ask_question(self):
