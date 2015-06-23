@@ -8,6 +8,7 @@ class QuizView(object):
         self.set_config_callback = None
         self.answer_question_callback = None
         self.next_question_callback = None
+        self.current_question = None
 
     def init_splash(self):
         ''' Initial view setup. Normally called by __init__ but can be called
@@ -40,10 +41,11 @@ class QuizView(object):
     def ask_question(self, question, callback):
         ''' Requests the view to ask the user a question  and stores the
             callback'''
+        self.current_question = question
         self.answer_question_callback = callback
-        self.do_ask_question(question)
+        self.do_ask_question(*question.ask())
 
-    def do_ask_question(self, question):
+    def do_ask_question(self, asks, predicate=None):
         ''' Actually does the UI for asking the user a question '''
         raise NotImplementedError("do_ask_question not implemented")
 
@@ -60,9 +62,10 @@ class QuizView(object):
         # Only allow the view to ask for the next question once it has handled
         # the result of the last one
         self.next_question_callback = next_question_callback
-        self.do_handle_answer_result(result)
+        self.do_handle_answer_result(result,
+                                     self.current_question.correct_answer)
 
-    def do_handle_answer_result(self, result):
+    def do_handle_answer_result(self, result, correct_answer):
         ''' Actually does the UI change for showing answer result '''
         raise NotImplementedError("do_handle_answer not implemented")
 

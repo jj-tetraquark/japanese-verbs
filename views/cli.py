@@ -72,12 +72,16 @@ class CLIView(views.interface.QuizView):
         time.sleep(1)
         self.clear_terminal()
 
-    def do_ask_question(self, question):
+    def do_ask_question(self, asks, predicate):
         print(u" しつもん ".center(40, "="))
-        print(u"\n{0} [{1}]".format(question.predicate[0],
-                                    question.predicate[1]))
-        answer = input(u"{0} : ".format(self.inflections[question.asks]))
+        print(u"\n{0} [{1}]".format(predicate[0], predicate[1]))
+        answer = input(u"{0} : ".format(self.inflections[asks]))
         self.submit_answer(answer)
+
+    def do_handle_answer_result(self, result, correct_answer):
+        print result
+        print correct_answer
+        self.request_next_question()
 
     def ask_for_number(self, question):
         while True:
