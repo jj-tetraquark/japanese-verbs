@@ -42,7 +42,7 @@ class TestVerbTestController(unittest.TestCase):
         view = self.MockQuizView()
         controller = VerbQuizController(view)
 
-        number_of_questions = 10
+        number_of_questions = 100
         view.mock_config = {"number_of_questions": number_of_questions,
                             "inflections": dict()
                             }
