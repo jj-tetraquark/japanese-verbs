@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import random
+import threading
 import lib.database as database
 import lib.quiz as quiz
 import lib.verbs as verbs
@@ -30,8 +31,11 @@ class VerbQuizController(object):
 
     def maybe_ask_question(self):
         if not self.quiz.finished():
-            self.view.ask_question(self.quiz.ask_question(),
-                                   self.handle_answer)
+            # Start it in its own thread to stop a horrible stack buildup
+            threading.Thread(
+                target=lambda:
+                self.view.ask_question(self.quiz.ask_question(),
+                                       self.handle_answer)).start()
         else:
             self.view.on_finish_quiz({"correct_answers":
                                       self.quiz.answered_correctly()})

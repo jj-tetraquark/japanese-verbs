@@ -2,6 +2,7 @@
 import unittest
 import random
 import sys
+import time
 if sys.version_info < (3, 3):
     import mock
 else:
@@ -42,7 +43,7 @@ class TestVerbTestController(unittest.TestCase):
         view = self.MockQuizView()
         controller = VerbQuizController(view)
 
-        number_of_questions = 100
+        number_of_questions = 500
         view.mock_config = {"number_of_questions": number_of_questions,
                             "inflections": dict()
                             }
@@ -54,8 +55,8 @@ class TestVerbTestController(unittest.TestCase):
         # asked and the number of correct answers
         def mock_answer_question(q, callback):
             times_called = view.ask_question.call_count
-            answer = "correct" if times_called <= correct_answers else "wrong"
-            callback(answer)
+            ans = "correct" if times_called <= correct_answers else "wrong"
+            callback(ans)
 
         view.ask_question = mock.MagicMock(
             side_effect=mock_answer_question)
@@ -79,12 +80,14 @@ class TestVerbTestController(unittest.TestCase):
         # Run the test
         controller.start()
 
+        time.sleep(3)
+
         # Check controller displays the start screen
         self.assertEqual(view.display_start_quiz.call_count, 1)
 
         # Check controller asked the right number of questions
-        self.assertEqual(view.ask_question.call_count, number_of_questions,
-                         "Did not ask {} questions".format(number_of_questions))
+        self.assertEqual(view.ask_question.call_count, number_of_questions)
+
 
         # Check controller sent the right number of results
         self.assertEqual(view.handle_answer_result.call_count,
