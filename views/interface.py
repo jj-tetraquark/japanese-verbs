@@ -41,6 +41,7 @@ class QuizView(object):
     def ask_question(self, question, callback):
         ''' Requests the view to ask the user a question  and stores the
             callback'''
+        self.next_question_callback = None
         self.current_question = question
         self.answer_question_callback = callback
         self.do_ask_question(*question.ask())
@@ -53,7 +54,6 @@ class QuizView(object):
         ''' Send the answer back to the controller via the callback '''
         if callable(self.answer_question_callback):
             self.answer_question_callback(answer)
-            self.answer_question_callback = None
         else:
             raise RuntimeError("Answer question callback invalid")
 
@@ -61,6 +61,7 @@ class QuizView(object):
         ''' Update UI to show if the user got the question right'''
         # Only allow the view to ask for the next question once it has handled
         # the result of the last one
+        self.answer_question_callback = None
         self.next_question_callback = next_question_callback
         self.do_handle_answer_result(result,
                                      self.current_question.correct_answer)
@@ -73,7 +74,6 @@ class QuizView(object):
         ''' Use the callback to ask for the next question '''
         if callable(self.next_question_callback):
             self.next_question_callback()
-            self.next_question_callback = None
         else:
             raise RuntimeError("Request next question callback invalid")
 

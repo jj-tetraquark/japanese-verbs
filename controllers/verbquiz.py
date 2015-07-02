@@ -33,17 +33,22 @@ class VerbQuizController(object):
     def maybe_ask_question(self):
         if not self.quiz.finished():
             # Start it in its own thread to stop a horrible stack buildup
-            threading.Thread(
+            t = threading.Thread(
                 target=lambda:
                 self.view.ask_question(self.quiz.ask_question(),
-                                       self.handle_answer)).start()
+                                       self.handle_answer))
+            t.start()
+            t.join()
         else:
             self.view.on_finish_quiz({"correct_answers":
                                       self.quiz.answered_correctly()})
 
     def handle_answer(self, answer):
         result = self.quiz.answer_question(answer)
-        self.view.handle_answer_result(result, self.maybe_ask_question)
+        threading.Thread(
+            target=lambda:
+            self.view.handle_answer_result(result, self.maybe_ask_question)
+            ).start()
 
     def make_question(self):
         predicate = random.choice(list(self.quiz_inflections.keys()))
