@@ -3,6 +3,7 @@ import textwrap
 import os
 import time
 import sys
+import locale
 import views.interface
 import lib.verbs as verbs
 from controllers.verbquiz import StandardConfig  # Might be circular...
@@ -12,6 +13,15 @@ try:
     input = raw_input
 except NameError:
     pass
+
+
+def u_input(text):
+    try:
+        return raw_input(text).decode(
+            sys.stdin.encoding or locale.getpreferredencoding(True))
+    except NameError:
+        return input(text)
+
 
 class CLIView(views.interface.QuizView):
     ''' Basic Command Line View '''
@@ -75,7 +85,7 @@ class CLIView(views.interface.QuizView):
     def do_ask_question(self, asks, predicate):
         print(u" しつもん ".center(40, "="))
         self.print_kanji_kana(predicate)
-        answer = input(u"{0} : ".format(self.inflections[asks]))
+        answer = u_input(u"{0} : ".format(self.inflections[asks]))
         self.submit_answer(answer)
 
     def do_handle_answer_result(self, is_correct, correct_answer):
@@ -102,12 +112,11 @@ class CLIView(views.interface.QuizView):
             else:
                 print(u"分かりません。もう一度数をください")
 
-
     def ask_for_selection_from_dictonary(self, options):
         print(self.format_option_table(options))
         while True:
             selection = input(
-                "選んでください [1 - {}]: ".format(len(options) -1))
+                "選んでください [1 - {}]: ".format(len(options) - 1))
 
             if selection.isdigit():
                 selection = int(selection)
@@ -115,7 +124,6 @@ class CLIView(views.interface.QuizView):
                 return selection
             else:
                 print(u"分かりません。もう一度")
-
 
     def format_option_table(self, options):
         spaced_inflections = ""
