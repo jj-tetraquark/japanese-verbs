@@ -203,7 +203,8 @@ class Verb(object):
                           "nu": u"に",
                           "bu": u"び",
                           "ru": u"り",
-                          "iku": u"き"}
+                          "iku": u"き",
+                          "aru": u"い"}
             masu_stem = stem[:-1] + u_to_i_map[self.ending] + u"ま"
         elif self.type == Types.SURU:
             masu_stem = stem[:-2] + u"しま"
