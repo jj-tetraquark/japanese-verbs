@@ -77,7 +77,7 @@ class VerbQuizController(object):
 
 # Possibly put this in a general helper folder?
 def make_bidirectional_verb_config(inflection_list):
-    return {inf: filter(lambda x: x != inf, inflection_list)
+    return {inf: [x for x in inflection_list if x != inf]
             for inf in inflection_list}
 
 
