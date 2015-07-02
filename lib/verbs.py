@@ -152,7 +152,7 @@ class Verb(object):
         if self.type == Types.ICHIDAN:
             return plain_form[:-1] + u"て"
         else:
-            if self.ending in ["u", "tsu", "ru", "iku"]:
+            if self.ending in ["u", "tsu", "ru", "iku", "aru"]:
                 return plain_form[:-1] + u"って"
             elif self.ending in ["bu", "nu", "mu"]:
                 return plain_form[:-1] + u"んで"
@@ -179,7 +179,8 @@ class Verb(object):
                               "nu": u"な",
                               "bu": u"ば",
                               "ru": u"ら",
-                              "iku": u"か"}
+                              "iku": u"か",
+                              "aru": u"ら"}
                 neg_stem += u_to_a_map[self.ending]
         elif self.type == Types.SURU:
             neg_stem = u"し"

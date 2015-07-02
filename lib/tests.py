@@ -226,6 +226,9 @@ class TestVerbPlainForm(TestVerbClass):
     def test_get_godan_plain_negative_iku_ending(self):
         self.assertEqual(u"行かない", self.iku.plain(negative=True))
 
+    def test_get_godan_plain_negative_aru_ending(self):
+        self.assertEqual(u"為さらない", self.nasaru.plain(negative=True))
+
     def test_get_aru_plain_negative(self):
         aru = Verb(kana=u"ある",
                    type=verbs.Types.GODAN, ending="irr",
@@ -360,6 +363,9 @@ class TestVerbTeForm(TestVerbClass):
 
     def test_get_iku_te_form(self):
         self.assertEqual(u"行って", self.iku.te())
+
+    def test_get_aru_te_form(self):
+        self.assertEqual(u"為さって", self.nasaru.te())
 
     def test_get_inflection(self):
         self.assertEqual(u"食べて", self.taberu.get_inflection(
