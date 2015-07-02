@@ -74,14 +74,25 @@ class CLIView(views.interface.QuizView):
 
     def do_ask_question(self, asks, predicate):
         print(u" しつもん ".center(40, "="))
-        print(u"\n{0} [{1}]".format(predicate[0], predicate[1]))
+        self.print_kanji_kana(predicate)
         answer = input(u"{0} : ".format(self.inflections[asks]))
         self.submit_answer(answer)
 
-    def do_handle_answer_result(self, result, correct_answer):
-        print result
-        print correct_answer
+    def do_handle_answer_result(self, is_correct, correct_answer):
+        print(u"-" * 40)
+        print("")
+        if is_correct:
+            print(u"\u25CB  せいかいです!")
+        else:
+            print(u"\u2716  まちがいです。")
+            self.print_kanji_kana(correct_answer)
+        print("")
+        print(u"-" * 40)
+        time.sleep(1)
         self.request_next_question()
+
+    def print_kanji_kana(self, kanji_kana_tuple):
+        print(u"\n{0} [{1}]".format(kanji_kana_tuple[0], kanji_kana_tuple[1]))
 
     def ask_for_number(self, question):
         while True:
