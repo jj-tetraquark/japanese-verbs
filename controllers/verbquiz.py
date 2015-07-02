@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import random
+import time
 import threading
 import lib.database as database
 import lib.quiz as quiz
@@ -60,6 +61,13 @@ class VerbQuizController(object):
                 "predicate": lambda o: o.get_inflection(predicate,
                                                         kanji=True, kana=True)
                 }
+
+    def wait_for_quiz_to_finish(self):
+        if self.quiz is None:
+            return
+        # yes, this is a busy loop. I'm not especially happy about it either
+        while not self.quiz.finished():
+            time.sleep(0.1)
 
 
 # Possibly put this in a general helper folder?

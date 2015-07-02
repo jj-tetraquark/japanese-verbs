@@ -80,7 +80,7 @@ class TestVerbTestController(unittest.TestCase):
         # Run the test
         controller.start()
 
-        time.sleep(3)  # TODO - FIX THIS AMAGAD D:
+        controller.wait_for_quiz_to_finish()
 
         # Check controller displays the start screen
         self.assertEqual(view.display_start_quiz.call_count, 1)
