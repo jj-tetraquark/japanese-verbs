@@ -181,8 +181,6 @@ class Verb(object):
         else:
             return u"して"
 
-        #TODO suru and kuru
-
     def __get_plain_negative_stem(self, stem):
         neg_stem = stem[:-1]
         if self.type == Types.GODAN:
