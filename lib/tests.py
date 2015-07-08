@@ -242,6 +242,43 @@ class TestVerbPlainForm(TestVerbClass):
         self.assertEqual(u"来ない", self.kuru.plain(negative=True))
         self.assertEqual(u"こない", self.kuru.plain(negative=True, kanji=False))
 
+    def test_get_ichidan_plain_past(self):
+        self.assertEqual(u"食べた", self.taberu.te())
+
+    def test_get_godan_plain_past_u_ending(self):
+        self.assertEqual(u"会った", self.au.te())
+        self.assertEqual(u"あった", self.au.te(kanji=False))
+
+    def test_get_godan_plain_past_tsu_ending(self):
+        self.assertEqual(u"待った", self.matsu.te())
+
+    def test_get_godan_plain_past_ru_ending(self):
+        self.assertEqual(u"帰った", self.kaeru.te())
+
+    def test_get_godan_plain_past_mu_ending(self):
+        self.assertEqual(u"飲んだ", self.nomu.te())
+
+    def test_get_godan_plain_past_bu_ending(self):
+        self.assertEqual(u"遊んだ", self.asobu.te())
+
+    def test_get_godan_plain_past_nu_ending(self):
+        self.assertEqual(u"死んだ", self.shinu.te())
+
+    def test_get_godan_plain_past_ku_ending(self):
+        self.assertEqual(u"弾いた", self.hiku.te())
+
+    def test_get_godan_plain_past_gu_ending(self):
+        self.assertEqual(u"泳いだ", self.oyogu.te())
+
+    def test_get_godan_plain_past_su_ending(self):
+        self.assertEqual(u"押した", self.osu.te())
+
+    def test_get_iku_plain_past(self):
+        self.assertEqual(u"行った", self.iku.te())
+
+    def test_get_aru_plain_past(self):
+        self.assertEqual(u"為さった", self.nasaru.te())
+
     def test_get_inflection(self):
         self.assertEqual(self.au.get_inflection(verbs.Inflections.PLAIN),
                          u"会う")

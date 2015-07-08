@@ -93,9 +93,9 @@ class Verb(object):
             I.NEGATIVE_PLAIN:
             lambda k: self.plain(negative=True, kanji=k),
             I.PAST_PLAIN:
-            not_implemented,
+            lambda k: self.plain(tense=Verb.PAST, kanji=k),
             I.NEGATIVE_PAST_PLAIN:
-            not_implemented,
+            lambda k: self.plain(negative=True, tense=Verb.PAST, kanji=k),
             I.POLITE:
             lambda k: self.masu(kanji=k),
             I.NEGATIVE_POLITE:
@@ -122,12 +122,17 @@ class Verb(object):
     def plain(self, **kwargs):
         use_kanji = kwargs.get("kanji", True)
         negative = kwargs.get("negative", False)
+        tense = kwargs.get("tense", Verb.NON_PAST)
+
         stem = self.kanji if use_kanji and self.kanji else self.kana
 
-        if not negative:
-            return stem
+        if tense is Verb.PAST:
+            pass
         else:
-            return self.__get_plain_negative_stem(stem) + u"ない"
+            if not negative:
+                return stem
+            else:
+                return self.__get_plain_negative_stem(stem) + u"ない"
 
     def masu(self, **kwargs):
         plain_form = self.plain(kanji=kwargs.get("kanji", True))
