@@ -40,7 +40,9 @@ class VerbQuizController(object):
             t.start()
             t.join()
         else:
-            self.view.on_finish_quiz({"correct_answers":
+            self.view.on_finish_quiz({"quiz_length":
+                                      self.quiz.length(),
+                                      "correct_answers":
                                       self.quiz.answered_correctly()})
 
     def handle_answer(self, answer):

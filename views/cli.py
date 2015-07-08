@@ -101,6 +101,15 @@ class CLIView(views.interface.QuizView):
         time.sleep(1)
         self.request_next_question()
 
+    def on_finish_quiz(self, data):
+        self.clear_terminal()
+        print(u"=" * 80)
+        print(u"おめでとう！クイズがかんせいです".center(80))
+        print(u"=" * 80)
+        print(u"\u25CB  せいかい : {0}".format(data["correct_answers"]))
+        print(u"\u2716  まちがい : {0}".format(data["quiz_length"] -
+                                           data["correct_answers"]))
+
     def print_kanji_kana(self, kanji_kana_tuple):
         print(u"\n{0} [{1}]".format(kanji_kana_tuple[0], kanji_kana_tuple[1]))
 
@@ -131,6 +140,7 @@ class CLIView(views.interface.QuizView):
             inflection = "{0}: {1}".format(k, v)
             spaced_inflections += inflection.ljust(26)
         return textwrap.fill(spaced_inflections, 78)
+
 
     def clear_terminal(self):
         os.system('cls' if os.name == 'nt' else 'clear')
