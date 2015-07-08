@@ -243,41 +243,41 @@ class TestVerbPlainForm(TestVerbClass):
         self.assertEqual(u"こない", self.kuru.plain(negative=True, kanji=False))
 
     def test_get_ichidan_plain_past(self):
-        self.assertEqual(u"食べた", self.taberu.te())
+        self.assertEqual(u"食べた", self.taberu.plain(tense=Verb.PAST))
 
     def test_get_godan_plain_past_u_ending(self):
-        self.assertEqual(u"会った", self.au.te())
-        self.assertEqual(u"あった", self.au.te(kanji=False))
+        self.assertEqual(u"会った", self.au.plain(tense=Verb.PAST))
+        self.assertEqual(u"あった", self.au.plain(kanji=False))
 
     def test_get_godan_plain_past_tsu_ending(self):
-        self.assertEqual(u"待った", self.matsu.te())
+        self.assertEqual(u"待った", self.matsu.plain(tense=Verb.PAST))
 
     def test_get_godan_plain_past_ru_ending(self):
-        self.assertEqual(u"帰った", self.kaeru.te())
+        self.assertEqual(u"帰った", self.kaeru.plain(tense=Verb.PAST))
 
     def test_get_godan_plain_past_mu_ending(self):
-        self.assertEqual(u"飲んだ", self.nomu.te())
+        self.assertEqual(u"飲んだ", self.nomu.plain(tense=Verb.PAST))
 
     def test_get_godan_plain_past_bu_ending(self):
-        self.assertEqual(u"遊んだ", self.asobu.te())
+        self.assertEqual(u"遊んだ", self.asobu.plain(tense=Verb.PAST))
 
     def test_get_godan_plain_past_nu_ending(self):
-        self.assertEqual(u"死んだ", self.shinu.te())
+        self.assertEqual(u"死んだ", self.shinu.plain(tense=Verb.PAST))
 
     def test_get_godan_plain_past_ku_ending(self):
-        self.assertEqual(u"弾いた", self.hiku.te())
+        self.assertEqual(u"弾いた", self.hiku.plain(tense=Verb.PAST))
 
     def test_get_godan_plain_past_gu_ending(self):
-        self.assertEqual(u"泳いだ", self.oyogu.te())
+        self.assertEqual(u"泳いだ", self.oyogu.plain(tense=Verb.PAST))
 
     def test_get_godan_plain_past_su_ending(self):
-        self.assertEqual(u"押した", self.osu.te())
+        self.assertEqual(u"押した", self.osu.plain(tense=Verb.PAST))
 
     def test_get_iku_plain_past(self):
-        self.assertEqual(u"行った", self.iku.te())
+        self.assertEqual(u"行った", self.iku.plain(tense=Verb.PAST))
 
     def test_get_aru_plain_past(self):
-        self.assertEqual(u"為さった", self.nasaru.te())
+        self.assertEqual(u"為さった", self.nasaru.plain(tense=Verb.PAST))
 
     def test_get_inflection(self):
         self.assertEqual(self.au.get_inflection(verbs.Inflections.PLAIN),
