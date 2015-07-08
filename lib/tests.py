@@ -328,8 +328,6 @@ class TestVerbPlainForm(TestVerbClass):
         self.assertEqual(u"為さらなかった", self.nasaru.plain(tense=Verb.PAST,
                                                                 negative=True))
 
-
-
     def test_get_inflection(self):
         self.assertEqual(self.au.get_inflection(verbs.Inflections.PLAIN),
                          u"会う")

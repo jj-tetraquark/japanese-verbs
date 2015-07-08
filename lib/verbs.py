@@ -126,17 +126,21 @@ class Verb(object):
 
         stem = self.kanji if use_kanji and self.kanji else self.kana
 
-        if tense is Verb.PAST:
-            te_form = self.te(**kwargs)
-            if te_form[-1] == u"て":
-                return te_form[:-1] + u"た"
+        if not negative:
+            if tense is Verb.PAST:
+                te_form = self.te(**kwargs)
+                if te_form[-1] == u"て":
+                    return te_form[:-1] + u"た"
+                else:
+                    return te_form[:-1] + u"だ"
             else:
-                return te_form[:-1] + u"だ"
-        else:
-            if not negative:
                 return stem
+        else:
+            negative_stem = self.__get_plain_negative_stem(stem)
+            if tense is Verb.PAST:
+                return negative_stem + u"なかった"
             else:
-                return self.__get_plain_negative_stem(stem) + u"ない"
+                return negative_stem + u"ない"
 
     def masu(self, **kwargs):
         plain_form = self.plain(kanji=kwargs.get("kanji", True))
