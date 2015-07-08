@@ -161,10 +161,11 @@ class Verb(object):
         return conjugated
 
     def te(self, **kwargs):
-        plain_form = self.plain(kanji=kwargs.get("kanji", True))
+        kanji = kwargs.get("kanji", True)
+        plain_form = self.plain(kanji=kanji)
         if self.type == Types.ICHIDAN:
             return plain_form[:-1] + u"て"
-        else:
+        elif self.type == Types.GODAN:
             if self.ending in ["u", "tsu", "ru", "iku", "aru"]:
                 return plain_form[:-1] + u"って"
             elif self.ending in ["bu", "nu", "mu"]:
@@ -175,6 +176,11 @@ class Verb(object):
                 return plain_form[:-1] + u"いで"
             elif self.ending == "su":
                 return plain_form[:-1] + u"して"
+        elif self.type == Types.KURU:
+            return u"来て" if kanji else u"きて"
+        else:
+            return u"して"
+
         #TODO suru and kuru
 
     def __get_plain_negative_stem(self, stem):

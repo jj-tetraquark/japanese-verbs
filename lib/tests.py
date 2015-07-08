@@ -450,6 +450,13 @@ class TestVerbTeForm(TestVerbClass):
     def test_get_iku_te_form(self):
         self.assertEqual(u"行って", self.iku.te())
 
+    def test_get_kuru_te_form(self):
+        self.assertEqual(u"来て", self.kuru.te())
+        self.assertEqual(u"きて", self.kuru.te(kanji=False))
+
+    def test_get_suru_te_form(self):
+        self.assertEqual(u"して", self.suru.te())
+
     def test_get_aru_te_form(self):
         self.assertEqual(u"為さって", self.nasaru.te())
 
