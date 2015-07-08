@@ -280,6 +280,56 @@ class TestVerbPlainForm(TestVerbClass):
     def test_get_aru_plain_past(self):
         self.assertEqual(u"為さった", self.nasaru.plain(tense=Verb.PAST))
 
+    def test_get_ichidan_plain_past_negative(self):
+        self.assertEqual(u"食べなかった", self.taberu.plain(tense=Verb.PAST,
+                                                                negative=True))
+
+    def test_get_godan_plain_past_negative_u_ending(self):
+        self.assertEqual(u"会わなかった", self.au.plain(tense=Verb.PAST,
+                                                    negative=True))
+
+    def test_get_godan_plain_past_negative_tsu_ending(self):
+        self.assertEqual(u"待たなかった", self.matsu.plain(tense=Verb.PAST,
+                                                            negative=True))
+
+    def test_get_godan_plain_past_negative_su_ending(self):
+        self.assertEqual(u"押さなかった", self.osu.plain(tense=Verb.PAST,
+                                                            negative=True))
+
+    def test_get_godan_plain_past_negative_mu_ending(self):
+        self.assertEqual(u"飲まなかった", self.nomu.plain(tense=Verb.PAST,
+                                                            negative=True))
+
+    def test_get_godan_plain_past_negative_ku_ending(self):
+        self.assertEqual(u"弾かなかった", self.hiku.plain(tense=Verb.PAST,
+                                                            negative=True))
+
+    def test_get_godan_plain_past_negative_gu_ending(self):
+        self.assertEqual(u"泳がなかった", self.oyogu.plain(tense=Verb.PAST,
+                                                            negative=True))
+
+    def test_get_godan_plain_past_negative_nu_ending(self):
+        self.assertEqual(u"死ななかった", self.shinu.plain(tense=Verb.PAST,
+                                                            negative=True))
+
+    def test_get_godan_plain_past_negative_bu_ending(self):
+        self.assertEqual(u"遊ばなかった", self.asobu.plain(tense=Verb.PAST,
+                                                            negative=True))
+
+    def test_get_godan_plain_past_negative_ru_ending(self):
+        self.assertEqual(u"帰らなかった", self.kaeru.plain(tense=Verb.PAST,
+                                                            negative=True))
+
+    def test_get_godan_plain_past_negative_iku_ending(self):
+        self.assertEqual(u"行かなかった", self.iku.plain(tense=Verb.PAST,
+                                                            negative=True))
+
+    def test_get_godan_plain_past_negative_aru_ending(self):
+        self.assertEqual(u"為さらなかった", self.nasaru.plain(tense=Verb.PAST,
+                                                                negative=True))
+
+
+
     def test_get_inflection(self):
         self.assertEqual(self.au.get_inflection(verbs.Inflections.PLAIN),
                          u"会う")
