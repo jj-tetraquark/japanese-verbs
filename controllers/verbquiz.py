@@ -117,9 +117,9 @@ class StandardConfig(object):
         PLAIN_AND_POLITE:
         make_bidirectional_verb_config(PLAIN_AND_POLITE_LIST),
         PLAIN_TO_TE_FORM:
-        make_monodirectional_verb_config(ALL_PLAIN_LIST, TE_FORM_LIST),
+        make_monodirectional_verb_config([I.PLAIN], TE_FORM_LIST),
         POLITE_TO_TE_FORM:
-        make_monodirectional_verb_config(ALL_POLITE_LIST, TE_FORM_LIST)
+        make_monodirectional_verb_config([I.POLITE], TE_FORM_LIST)
     }
 
     @classmethod
