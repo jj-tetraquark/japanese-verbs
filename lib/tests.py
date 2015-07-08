@@ -247,7 +247,8 @@ class TestVerbPlainForm(TestVerbClass):
 
     def test_get_godan_plain_past_u_ending(self):
         self.assertEqual(u"会った", self.au.plain(tense=Verb.PAST))
-        self.assertEqual(u"あった", self.au.plain(kanji=False))
+        self.assertEqual(u"あった", self.au.plain(tense=Verb.PAST,
+                                                  kanji=False))
 
     def test_get_godan_plain_past_tsu_ending(self):
         self.assertEqual(u"待った", self.matsu.plain(tense=Verb.PAST))

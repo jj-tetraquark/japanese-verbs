@@ -127,7 +127,11 @@ class Verb(object):
         stem = self.kanji if use_kanji and self.kanji else self.kana
 
         if tense is Verb.PAST:
-            pass
+            te_form = self.te(**kwargs)
+            if te_form[-1] == u"て":
+                return te_form[:-1] + u"た"
+            else:
+                return te_form[:-1] + u"だ"
         else:
             if not negative:
                 return stem
