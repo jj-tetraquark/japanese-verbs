@@ -83,13 +83,13 @@ def get_verb_type(description):
     verb_type = None
     ending = None
     if description.startswith("Godan"):
-        verb_type = verbs.Types.GODAN
+        verb_type = lib.verbs.Types.GODAN
     elif description.startswith("Ichidan"):
-        verb_type = verbs.Types.ICHIDAN
+        verb_type = lib.verbs.Types.ICHIDAN
     elif description.startswith("Kuru"):
-        verb_type = verbs.Types.KURU
+        verb_type = lib.verbs.Types.KURU
     elif description.startswith("suru"):
-        verb_type = verbs.Types.SURU
+        verb_type = lib.verbs.Types.SURU
 
     match = re.search('`([bgkmrts]*?u)\'', description)
     if match:
@@ -130,7 +130,7 @@ class Database(object):
         if not os.path.isfile(db_path):
             print("Creating new sqlite database at {}".format(db_path))
 
-        self.db = sqlite3.connect(db_path)
+        self.db = sqlite3.connect(db_path, check_same_thread=False)
         self.db.row_factory = sqlite3.Row
         self.cur = self.db.cursor()
 
