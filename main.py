@@ -14,12 +14,15 @@ def main():
     view = WebView()
     controller = VerbQuizController(view)
 
-    view.init_splash()
+    # This needs to be sorted out. It's currently broken for WebView because start()
+    # starts the server and is blocking. The controller never gets started. The controller
+    # should be started first in its own thread and it should wait until the view has started
+    # before asking the user for config.
+    # The view needs to be started in the main thread
 
-    control_thread = threading.Thread(target=controller.start)
-    control_thread.start()
+    controller.start()
+    view.start()
     controller.wait_for_quiz_to_finish()
-    control_thread.join()
 
 
 def is_first_run():

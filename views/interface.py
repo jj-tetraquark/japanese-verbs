@@ -9,11 +9,12 @@ class QuizView(object):
         self.answer_question_callback = None
         self.next_question_callback = None
         self.current_question = None
+        self.started = False
 
-    def init_splash(self):
+    def start(self):
         ''' Initial view setup. Normally called by __init__ but can be called
             manually '''
-        raise NotImplementedError("Init splash not implemented")
+        raise NotImplementedError("View Start not implemented")
 
     def request_quiz_config(self, callback):
         ''' Requests the quiz config from the user. Takes callback for when

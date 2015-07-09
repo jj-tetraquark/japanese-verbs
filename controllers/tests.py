@@ -25,15 +25,18 @@ class TestVerbTestController(unittest.TestCase):
         self.assertIsNotNone(controller)
 
     def test_start(self):
-        view = QuizView()
+        view = self.MockQuizView()
         controller = VerbQuizController(view)
 
         view.request_quiz_config = mock.MagicMock()
 
         controller.start()
+        # wait until view is ready before starting
+        self.assertEqual(view.request_quiz_config.call_count, 0)
+        view.start()
 
-        args = tuple(view.request_quiz_config.call_args)[0]
         self.assertEqual(view.request_quiz_config.call_count, 1)
+        args = tuple(view.request_quiz_config.call_args)[0]
 
         self.assertTrue(callable(args[0]),
                         "Controller did not provide view with valid callback")
@@ -79,6 +82,7 @@ class TestVerbTestController(unittest.TestCase):
 
         # Run the test
         controller.start()
+        view.start()
 
         controller.wait_for_quiz_to_finish()
 
@@ -164,6 +168,10 @@ class TestVerbTestController(unittest.TestCase):
         def __init__(self):
             super(TestVerbTestController.MockQuizView, self).__init__()
             self.mock_config = None
+
+        def start(self):
+            self.started = True
+            time.sleep(0.2) # I'll think of something better later
 
         def ask_user_for_config(self):
             self.set_quiz_config(self.mock_config)

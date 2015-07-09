@@ -30,7 +30,7 @@ class CLIView(views.interface.QuizView):
         super(CLIView, self).__init__()
         self.inflections = verbs.Inflections.All_readable_dict()
 
-    def init_splash(self):
+    def start(self):
         self.clear_terminal()
         #日本語の動詞
         print('''
@@ -50,6 +50,7 @@ class CLIView(views.interface.QuizView):
 
                                にほんのどうし
         ''')
+        self.started = True
 
     def ask_user_for_config(self):
         print(u"動詞質問はどれですか\n====================")
