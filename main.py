@@ -1,19 +1,25 @@
 #!/usr/bin/env python
-
 import os
+import threading
 import lib.database as database
 from controllers.verbquiz import VerbQuizController
 from views.cli import CLIView
+from views.web import WebView
 
 
 def main():
     if is_first_run():
         do_installation()
-    view = CLIView()
+    #view = CLIView()
+    view = WebView()
     controller = VerbQuizController(view)
 
     view.init_splash()
-    controller.start()
+
+    control_thread = threading.Thread(target=controller.start)
+    control_thread.start()
+    controller.wait_for_quiz_to_finish()
+    control_thread.join()
 
 
 def is_first_run():
