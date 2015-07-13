@@ -10,18 +10,11 @@ from views.web import WebView
 def main():
     if is_first_run():
         do_installation()
-    #view = CLIView()
-    view = WebView()
+    view = CLIView()
+    #view = WebView()
     controller = VerbQuizController(view)
 
-    # This needs to be sorted out. It's currently broken for WebView because start()
-    # starts the server and is blocking. The controller never gets started. The controller
-    # should be started first in its own thread and it should wait until the view has started
-    # before asking the user for config.
-    # The view needs to be started in the main thread
-
     controller.start()
-    view.start()
     controller.wait_for_quiz_to_finish()
 
 

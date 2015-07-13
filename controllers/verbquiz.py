@@ -18,11 +18,7 @@ class VerbQuizController(object):
         self.quiz_jlpt_level = None
 
     def start(self):
-        threading.Thread(target=self.wait_for_view_ready_then_begin).start()
-
-    def wait_for_view_ready_then_begin(self):
-        while not self.view.started:
-            time.sleep(0.1)
+        self.view.start()
         self.view.request_quiz_config(self.on_have_quiz_config)
 
     def on_have_quiz_config(self, config):
@@ -78,7 +74,7 @@ class VerbQuizController(object):
         if self.quiz is None:
             return
         # yes, this is a busy loop. I'm not especially happy about it either
-        while not self.quiz.finished() or not self.view.started:
+        while not self.quiz.finished():
             time.sleep(0.1)
 
 
